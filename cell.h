@@ -4,6 +4,9 @@
 #include <cstddef>
 #include "enums.h"
 
+class Ability;
+class Link;
+
 class Cell {
   bool hasServerPort; //whether the cell has a server port
   size_t row; //row of cell
