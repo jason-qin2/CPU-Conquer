@@ -26,8 +26,8 @@ Link *getLink() {
 } //returns link on the cell
 
 bool hasAbilities() {
-  for(auto a: abilities) {
-    if (a) {
+  for(int i = 0; i < abilities.size(); i++) {
+    if (abilities[i]) {
       return true;
     }
   }
@@ -45,3 +45,10 @@ void setLink(Link *link) {
 void addAbility(Ability *ability) {
   abilities.push_back(ability);
 } //adds an ability to the link on the cell
+
+~Cell() {
+  delete link;
+  for(int i = 0; i < abilities.size(); i++) {
+    abilites[i] = abilities.erase(abilities[i]);
+  }
+}
