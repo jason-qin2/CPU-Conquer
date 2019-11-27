@@ -3,7 +3,16 @@
 
 using namespace std;
 
-Cell(size_t r, size_t c) : hasServerPort{false}, row{r}, col{c}, link{nullptr} {} //constructor
+Cell(size_t r, size_t c) : row{r}, col{c}, link{nullptr} {
+  if (col == 3 || col == 4) {
+    if (row == 0 || row == 7) {
+      hasServerPort == true;
+    }
+  }
+  else {
+    hasServerPort == false;
+  }
+} //constructor
 
 bool hasLink() {
   if (link) {
