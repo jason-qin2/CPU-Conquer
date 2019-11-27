@@ -2,6 +2,7 @@
 #define _PLAYER_H
 #include <vector> 
 #include "link.h"
+#include "enums.h"
 #include "ability.h"
 
 class Player {
