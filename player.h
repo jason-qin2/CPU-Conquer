@@ -2,6 +2,7 @@
 #define _PLAYER_H
 #include <vector> 
 #include "link.h"
+#include "ability.h"
 
 class Player {
     private:
@@ -12,9 +13,9 @@ class Player {
     public:
         void downloadLink(Link *link);
         void useAbility(Ability *ability);
-        int downloadedVirusCount();
-        int downloadedDataCount();
-        int abilityCount();
-}
+        int getDlVirusCount();
+        int getDlDataCount();
+        int getAbilityCount();
+};
 
 #endif
