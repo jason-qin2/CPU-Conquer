@@ -3,15 +3,14 @@
 #include <vector>
 #include <cstddef>
 #include "enums.h"
-
-class Ability;
-class Link;
+#include "link.h"
+#include "ability.h"
 
 class Cell {
   bool hasServerPort; //whether the cell has a server port
   size_t row; //row of cell
   size_t col; //column of cell
-  Link link; //link on cell, if any
+  Link *link; //link on cell, if any
   std::vector<Ability> abilities; //abilities of cell
 
 public:
