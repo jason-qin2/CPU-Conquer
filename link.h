@@ -7,7 +7,7 @@
 
 class Link { 
     private:
-        std::vector<Ability*> Abilities;
+        std::vector<Ability*> abilities;
         int strength;
         LinkType linkType;
         char name; 
@@ -19,6 +19,6 @@ class Link {
         int getStrength();
         void show();
         void addAbility(Ability *ability);
-}
+};
 
 #endif
