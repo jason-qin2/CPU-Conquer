@@ -9,6 +9,7 @@ class Ability {
         AbilityType type; 
     public:
         void useAbility(); 
+        AbilityType getAbilityType();
 };
 
 #endif
