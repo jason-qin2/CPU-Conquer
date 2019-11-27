@@ -10,7 +10,7 @@ void Player::useAbility(Ability *ability){
 int Player::getDlVirusCount() {
     int virusCount;
     for (int i = 0; i < downloadedLinks.size(); i++) {
-        if (downloadedLinks[i]->getLinkType() == "Virus") {
+        if (downloadedLinks[i]->getLinkType() == LinkType::Virus) {
             virusCount++; 
         }
     }
@@ -20,7 +20,7 @@ int Player::getDlVirusCount() {
 int Player::getDlDataCount() {
     int dataCount; 
     for (int i = 0; i < downloadedLinks.size(); i++) {
-        if (downloadedLinks[i]->getLinkType() == "Data") {
+        if (downloadedLinks[i]->getLinkType() == LinkType::Data) {
             dataCount++; 
         }
     }
