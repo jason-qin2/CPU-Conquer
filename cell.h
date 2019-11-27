@@ -2,8 +2,7 @@
 #define CELL_H
 #include <vector>
 #include <cstddef>
-#include "ability.h"
-#include "link.h"
+#include "enums.h"
 
 class Ability;
 class Link;
