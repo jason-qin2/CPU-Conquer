@@ -2,7 +2,6 @@
 #define _LINK_H
 
 #include <vector>
-#include "ability.h"
 #include "enums.h"
 #include "player.h"
 

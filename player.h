@@ -2,7 +2,6 @@
 #define _PLAYER_H
 #include <vector> 
 #include "link.h"
-#include "ability.h"
 
 class Player {
     private:

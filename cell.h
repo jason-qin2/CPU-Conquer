@@ -4,7 +4,6 @@
 #include <cstddef>
 #include "enums.h"
 #include "link.h"
-#include "ability.h"
 
 class Cell {
   bool hasServerPort; //whether the cell has a server port
