@@ -1,27 +1,38 @@
 #include "player.h"
-#include <vector>
 
-void downloadLink(Link link)
-{
+Player::Player(int playerNumber, std::vector<Ability*> abilities, std::vector<Link*> links) :
+    playerNumber{playerNumber}, abilities{abilities}, ownedLinks{links} {}
+
+void Player::downloadLink(Link *link) {
+    downloadedLinks.push_back(link);
 }
 
-int getDlVirusCount()
-{
+void Player::useAbility(Ability *ability){
 }
-int getDlDataCount(){
+
+int Player::getDlVirusCount() {
+    int virusCount;
+    for (int i = 0; i < downloadedLinks.size(); i++) {
+        if (downloadedLinks[i]->getLinkType() == LinkType::Virus) {
+            virusCount++; 
+        }
+    }
+    return virusCount; 
+}
+
+int Player::getDlDataCount() {
     int dataCount; 
-    for (int i = 0; i < downloadedLinks.size(); i++){
-        if (downloadedLinks[i].getLinkType() == "Data"){
+    for (int i = 0; i < downloadedLinks.size(); i++) {
+        if (downloadedLinks[i]->getLinkType() == LinkType::Data) {
             dataCount++; 
         }
     }
     return dataCount; 
 }
-int getAbilityCount()
-{
+
+int Player::getAbilityCount() {
     int abilityCount = 0;
-    for (int i = 0; i < abilities.size(); i++)
-    {
+    for (int i = 0; i < abilities.size(); i++) {
         abilityCount++;
     }
     return abilityCount;

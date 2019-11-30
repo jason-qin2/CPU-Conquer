@@ -2,6 +2,8 @@
 #define _PLAYER_H
 #include <vector> 
 #include "link.h"
+#include "enums.h"
+#include "ability.h"
 
 class Player {
     private:
@@ -10,11 +12,12 @@ class Player {
         std::vector<Link*> downloadedLinks; 
         std::vector<Ability*> abilities;
     public:
+        Player(int playerNumber, std::vector<Ability*> abilities, std::vector<Link*> links);
         void downloadLink(Link *link);
         void useAbility(Ability *ability);
-        int downloadedVirusCount();
-        int downloadedDataCount();
-        int abilityCount();
-}
+        int getDlVirusCount();
+        int getDlDataCount();
+        int getAbilityCount();
+};
 
 #endif

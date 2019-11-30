@@ -4,6 +4,7 @@
 #include <cstddef>
 #include "enums.h"
 #include "link.h"
+#include "ability.h"
 
 class Cell {
   bool hasServerPort; //whether the cell has a server port
@@ -19,6 +20,7 @@ public:
   bool hasAbilities(); //whether the cell has abilities
   std::vector<Ability*> getAbilities(); //gets the abilities of the cell
   void setLink(Link *link); //places a link on the cell
+  void removeLink(); //removes link on the cell
   void addAbility(Ability *ability); //adds an ability to the cell
 };
 
