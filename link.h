@@ -1,24 +1,26 @@
 #ifndef _LINK_H
 #define _LINK_H
-
 #include <vector>
 #include "enums.h"
-#include "player.h"
+#include "ability.h"
 
-class Link { 
+
+class Link {
     private:
         std::vector<Ability*> abilities;
         int strength;
         LinkType linkType;
-        char name; 
+        char name;
         bool hidden = true;
-        Player ownedBy; 
     public:
+        Link(int s, LinkType l, char n);
         void changeType();
         LinkType getLinkType();
         int getStrength();
         void show();
         void addAbility(Ability *ability);
+        char getName();
+        bool isHidden();
 };
 
 #endif
