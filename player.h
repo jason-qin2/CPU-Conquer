@@ -18,6 +18,7 @@ class Player {
         int getDlVirusCount();
         int getDlDataCount();
         int getAbilityCount();
+        int getPlayerNumber();
 };
 
 #endif
