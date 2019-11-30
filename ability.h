@@ -10,6 +10,7 @@ class Ability {
     public:
         void useAbility(); 
         AbilityType getAbilityType();
+        bool getUsed();
 };
 
 #endif
