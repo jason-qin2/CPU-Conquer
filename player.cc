@@ -37,3 +37,7 @@ int Player::getAbilityCount() {
     }
     return abilityCount;
 }
+
+int Player::getPlayerNumber() {
+    return playerNumber;
+}
