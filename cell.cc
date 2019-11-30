@@ -49,3 +49,8 @@ void Cell:removeLink() {
 void Cell::addAbility(Ability *ability) {
   abilities.push_back(ability);
 } //adds an ability to the link on the cell
+
+bool Cell::hasServerPort() {
+  return hasServerPort;
+} //whether the cell has a server port
+

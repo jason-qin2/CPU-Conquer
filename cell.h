@@ -22,6 +22,7 @@ public:
   void setLink(Link *link); //places a link on the cell
   void removeLink(); //removes link on the cell
   void addAbility(Ability *ability); //adds an ability to the cell
+  bool hasServerPort(); //whether the cell has a server port
 };
 
 #endif
