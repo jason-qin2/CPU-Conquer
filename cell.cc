@@ -43,7 +43,7 @@ void Cell::setLink(Link *link) {
 } //places a link on the cell
 
 void Cell:removeLink() {
-  delete link;
+  link = nullptr;
 } //removes link on the cell
 
 void Cell::addAbility(Ability *ability) {
