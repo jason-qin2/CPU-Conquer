@@ -12,6 +12,7 @@ class Player {
         std::vector<Link*> downloadedLinks; 
         std::vector<Ability*> abilities;
     public:
+        Player(int playerNumber, std::vector<Ability*> abilities, std::vector<Link*> links);
         void downloadLink(Link *link);
         void useAbility(Ability *ability);
         int getDlVirusCount();

@@ -1,5 +1,8 @@
 #include "player.h"
 
+Player::Player(int playerNumber, std::vector<Ability*> abilities, std::vector<Link*> links) :
+    playerNumber{playerNumber}, abilities{abilities}, ownedLinks{links} {}
+
 void Player::downloadLink(Link *link) {
     downloadedLinks.push_back(link);
 }
