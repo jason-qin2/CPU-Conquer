@@ -28,7 +28,7 @@ void Link::show() {
 }
 
 void Link::addAbility(Ability *ability) {
-  Abilities.push_back(ability);
+  abilities.push_back(ability);
 }
 
 char Link::getName() {
