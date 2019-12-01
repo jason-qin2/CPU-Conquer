@@ -3,7 +3,7 @@
 
 using namespace std;
 
-TextDisplay() {
+TextDisplay::TextDisplay() {
   for (int i = 0; i < 8; i++) {
     vector<char> row;
     for (int j = 0; j < 8; j++) {
@@ -12,7 +12,7 @@ TextDisplay() {
     theDisplay.push_back(row);
   }
 }
-void notify(Subject &whoFrom) {
+void TextDisplay::notify(Subject &whoFrom) {
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
       Cell curCell = whoFrom[i][j];
