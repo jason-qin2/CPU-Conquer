@@ -140,7 +140,7 @@ void Grid::move(size_t row, size_t col, Link *link) {
         Link *opponentLink = cell.getLink();
         battle(link, opponentLink, activePlayer, players );
     }
-    cell.setLink(link);
+    theGrid[row][col].setLink(link);
   }
   else {
     moveOffGrid(row, col, activePlayer, link);
@@ -180,7 +180,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       move(row + 2, col, link);
     }
     else {
-      move(row + 2, col, link);
+      move(row + 1, col, link);
     }
   }
   else if (dir == Direction::West) {
@@ -191,7 +191,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       move(row, col - 1, link);
     }
   }
-
+  notifyObservers();
 } // moves a link a certain direction
 
 std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNum) {
@@ -345,7 +345,7 @@ void Grid::changeActivePlayer() {
         if (player->getPlayerNumber() != activePlayer->getPlayerNumber()) {
             activePlayer = player;
             return;
-        } 
+        }
     }
 }
 
@@ -357,4 +357,5 @@ std::ostream &operator<<(std::ostream &out, const Grid &g) {
     out << *g.textDisplay;
     out << "========" << std::endl;
     g.printPlayer(out, playerTwo);
+    return out;
 }
