@@ -191,7 +191,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       move(row, col - 1, link);
     }
   }
-
+  notifyObservers();
 } // moves a link a certain direction
 
 std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNum) {
@@ -345,7 +345,7 @@ void Grid::changeActivePlayer() {
         if (player->getPlayerNumber() != activePlayer->getPlayerNumber()) {
             activePlayer = player;
             return;
-        } 
+        }
     }
 }
 
