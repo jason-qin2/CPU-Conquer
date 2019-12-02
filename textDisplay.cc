@@ -55,7 +55,7 @@ void TextDisplay::notify(Subject &whoFrom) {
   }
 }
 
-friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
+std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
       out << td.theDisplay[i][j];
