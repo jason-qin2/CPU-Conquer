@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
             try {
                 g.getActivePlayer()->useAbility(abilityNum);
                 usedAbility = true;
+                g.changeActivePlayer();
             } catch (AbilityError) {
                 cout << "Invalid usage of ability" << endl;
             }

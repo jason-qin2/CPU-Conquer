@@ -33,6 +33,7 @@ class Grid : public Subject {
         Cell *getCell(int row, int col);
         Player *getPlayer(int playerNum);
         Player *getActivePlayer();
+        void changeActivePlayer();
 
         friend std::ostream &operator<<(std::ostream &out, const Grid &g);
 };

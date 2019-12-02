@@ -118,6 +118,7 @@ void Player::useAbility(int abilityNum){
         scan(&opponentLinks, ownedLinks);
     }
     ability->useAbility();
+    theGrid.notifyObservers();
     return;
 }
 
