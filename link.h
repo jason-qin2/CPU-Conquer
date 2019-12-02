@@ -23,6 +23,7 @@ class Link {
         char getName();
         bool isHidden();
         int getPlayerNum();
+        std::vector<Ability*> getAbilities();
 };
 
 #endif
