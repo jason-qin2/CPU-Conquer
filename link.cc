@@ -43,6 +43,6 @@ int Link::getPlayerNum() {
   return playerNum;
 }
 
-std::vector<Ability*> getAbilities() {
+std::vector<Ability*> Link::getAbilities() {
   return abilities;
 }
