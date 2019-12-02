@@ -22,8 +22,6 @@ bool isFirewall(Cell cell) {
   return false;
 }
 
-
-
 getPlayerNum();
 void TextDisplay::notify(Subject &whoFrom) {
   for (int i = 0; i < 8; i++) {
