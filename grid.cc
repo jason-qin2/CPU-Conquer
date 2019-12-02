@@ -340,6 +340,15 @@ Player *Grid::getActivePlayer() {
     return activePlayer;
 }
 
+void Grid::changeActivePlayer() {
+    for (auto player: players) {
+        if (player->getPlayerNumber() != activePlayer->getPlayerNumber()) {
+            activePlayer = player;
+            return;
+        } 
+    }
+}
+
 std::ostream &operator<<(std::ostream &out, const Grid &g) {
     Player *playerOne = g.players[0];
     Player *playerTwo = g.players[1];
