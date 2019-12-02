@@ -17,14 +17,14 @@ class Grid : public Subject {
         std::vector<Player*> players; // Vector of players of the game
         Player *activePlayer; // The player with the active turn
         void printPlayer(std::ostream &out, Player *player) const;
+        std::vector<Ability*> initAbilities(std::string abilitiesStr, int playerNum);
+        std::vector<Link*> initLinks(std::string linksStr, int playerNum);
     public:
         bool isFinished(); // returns True if the game is finished
         Player *whoWon(); // returns the winning player
         void init(std::string pOneAbil, std::string pTwoAbil, std::string pOneLinks, 
             std::string pTwoLinks, bool hasGraphics); // initializes the game
         void moveLink(Link *link, Direction dir); // moves a link a certain direction
-        // void addGraphicsDisplay(GraphicsDisplay *graphicsDisplay) // adds GraphicsDisplay
-        void addTextDisplay(TextDisplay *textDisplay); // adds TextDisplay
 
         friend std::ostream &operator<<(std::ostream &out, const Grid &g);
 };

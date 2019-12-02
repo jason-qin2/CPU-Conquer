@@ -20,7 +20,7 @@ class Player {
         int getDlDataCount();
         int getAbilityCount();
         int getPlayerNumber();
-        std::vector<Link*> *getOwnedLinks();
+        std::vector<Link*> &getOwnedLinks();
 };
 
 #endif
