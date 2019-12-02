@@ -150,6 +150,10 @@ int Player::getAbilityCount() {
     return abilityCount;
 }
 
+int Player::getPlayerNumber() {
+    return playerNumber; 
+}
+
 std::vector<Link *> &Player::getOwnedLinks() {
     return &ownedLinks; 
 }
