@@ -35,4 +35,8 @@ void moveLink(Link *link, Direction dir); // moves a link a certain direction
 // void addGraphicsDisplay(GraphicsDisplay graphicsDisplay) // adds GraphicsDisplay
 void addTextDisplay(TextDisplay textDisplay); // adds TextDisplay
 
+Info Grid::getInfo() {
+    return Info{theGrid};
+}
+
 friend std::ostream &operator<<(std::ostream &out, const Grid &g);
