@@ -13,13 +13,18 @@ TextDisplay::TextDisplay() {
   }
 }
 
-bool isFirewall(Cell cell) {
+int getFirewallOwner(Cell cell) {
   for (int i = 0; i < cell.getAbilities().size(); i++) {
     if (cell.getAbilities()[i].getAbilityType() == AbilityType::Firewall) {
-      return true;
+      if (cell.getAbilities()[i].getPlayerNum() == 1) {
+        return 1;
+      }
+      else if (cell.getAbilities()[i].getPlayerNum() == 2) {
+        return 2;
+      }
     }
   }
-  return false;
+  return 0;
 }
 
 void TextDisplay::notify(Subject &whoFrom) {
@@ -27,24 +32,16 @@ void TextDisplay::notify(Subject &whoFrom) {
     for (int j = 0; j < 8; j++) {
       Cell curCell = whoFrom[i][j];
       if (curCell.hasLink()) {
-        if (isFirewall(curCell)) {
-          for (int i = 0; i < cell.getAbilities().size(); i++) {
-            if (cell.getAbilities()[i].getAbilityType() == AbilityType::Firewall) {
-              if (cell.getAbilities()[i].getPlayerNum() == 1) {
-                theDisplay[i][j] = 'm';
-              }
-              else if (cell.getAbilities()[i].getPlayerNum() == 2) {
-                theDisplay[i][j] = 'w';
-              }
-            }
-          }
-        }
-        else {
-          theDisplay[i][j] = curCell.getLink().getName();
-        }
+        theDisplay[i][j] = curCell.getLink().getName();
       }
       else if (curCell.hasServerPort()) {
         theDisplay[i][j] = 'S';
+      }
+      else if (getFirewallOwner(curCell) == 1) {
+        theDisplay[i][j] = 'm';
+      }
+      else if (getFirewallOwner(curCell) == 2) {
+        theDisplay[i][j] = 'w';
       }
       else {
         theDisplay[i][j] = '.';
