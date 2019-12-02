@@ -83,6 +83,7 @@ int main(int argc, char *argv[]) {
           }
           g.moveLink(link, dir);
           cout << g;
+          g.changeActivePlayer();
         }
     }
     return 0;
