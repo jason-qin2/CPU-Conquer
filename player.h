@@ -4,6 +4,7 @@
 #include "link.h"
 #include "enums.h"
 #include "grid.h"
+#include "cell.h"
 #include "ability.h"
 
 class Player {
@@ -18,7 +19,7 @@ class Player {
         int getDlVirusCount();
         int getDlDataCount();
         int getAbilityCount();
-        std::vector<Link*> *getOwnedLinks();
+        std::vector<Link*> &getOwnedLinks();
 };
 
 #endif
