@@ -1,5 +1,8 @@
 #include "ability.h"
 
+Ability::Ability(AbilityType type, int playerNum) :
+    type{type}, playerNum{playerNum} {}
+
 void Ability::useAbility() {
     isUsed = true; 
 }
@@ -14,4 +17,8 @@ bool Ability::getUsed() {
     } else {
         return true; 
     }
+}
+
+int Ability::getPlayerNum() {
+    return playerNum;
 }

@@ -104,7 +104,7 @@ void Player::useAbility(Ability *ability, Grid *theGrid){
     } else if(currAbility == AbilityType::FireWall) {
         fireWall(theGrid, ability);
     } else if(currAbility == AbilityType::Download) {
-        download(opponentNumber, opponentLinks, *this);
+        download(opponentNumber, opponentLinks, this);
     } else if(currAbility == AbilityType::Polarize) {
         polarize(opponentNumber, opponentLinks, ownedLinks);
     } else if(currAbility == AbilityType::Scan) { 
@@ -147,7 +147,7 @@ int Player::getPlayerNumber() {
 }
 
 std::vector<Link *> &Player::getOwnedLinks() {
-    return &ownedLinks; 
+    return ownedLinks; 
 }
 
 Player::~Player() {
