@@ -82,6 +82,7 @@ int main(int argc, char *argv[]) {
             }
           }
           g.moveLink(link, dir);
+          cout << g;
         }
     }
     return 0;
