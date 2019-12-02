@@ -15,6 +15,11 @@ class Player {
         std::vector<Link*> downloadedLinks;
         std::vector<Ability*> abilities;
         Grid &theGrid;
+        void linkBoost(Ability *ability);
+        void fireWall(Ability *ability);
+        void download(int opponentNumber, std::vector<Link *> opponentLinks, Player *curPlayer);
+        void polarize(int opponentNumber, std::vector<Link *> opponentLinks);
+        void scan(std::vector <Link *> opponentLinks);
     public:
         Player(int playerNumber, std::vector<Ability*> abilities,
             std::vector<Link*> links, Grid &theGrid);

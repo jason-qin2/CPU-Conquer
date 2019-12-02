@@ -1,5 +1,6 @@
 #include "link.h"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -8,10 +9,10 @@ Link::Link(int strength, LinkType type, char name, int playerNum) : strength{str
 
 void Link::changeType() {
   if (linkType == LinkType::Data) {
-    linkType == LinkType::Virus;
+    linkType = LinkType::Virus;
   }
   else if (linkType == LinkType::Virus) {
-    linkType == LinkType::Data;
+    linkType = LinkType::Data;
   }
 }
 
