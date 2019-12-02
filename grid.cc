@@ -103,20 +103,53 @@ void moveOffGrid(size_t row, size_t col, Player *Player, Link *link) {
   }
 }
 
-void move(Cell cell, size_t row, size_t col, Player *player, Link *link) {
-  if (isValidMove(row, col)) {
-    cell = theGrid[row][col];
+bool willBattle(Cell cell) {
+    if(cell.hasLink()) {
+        return true; 
+    } else {
+        return false; 
+    }
+}
+
+void battle(Link *ownLink, Link *opponentLink, Player *activePlayer, std::vector<Player*> players) {
+    ownLink->show();
+    opponentLink->show();
+    int opponentID = (activePlayer->getPlayerNumber() == 1) ? 2 : 1; 
+    if(ownLink->getStrength() >= opponentLink->getStrength()) {
+        activePlayer->downloadLink(opponentLink);
+    } else {
+        players[opponentID - 1]->downloadLink(ownLink);
+    }
+}
+
+void serverport(Link *link, size_t row, std::vector<Player*> players) {
+    if(row == 0) {
+        players[0]->downloadLink(link);
+    } else {
+        players[1]->downloadLink(link);
+    }
+}
+
+void move(Cell cell, size_t row, size_t col, Player *activePlayer, Link *link, std::vector<Player*> players) {
+  if (isValidMove(row, col, activePlayer)) {
     if (isFirewall(cell)) {
       firewall(cell);
+    }
+    if(cell.getServerPort()) {
+        serverport(link, row, players);
+    }
+    if(willBattle(cell)) {
+        Link *opponentLink = cell.getLink();
+        battle(link, opponentLink, activePlayer, players );
     }
     cell.setLink(link);
   }
   else {
-    moveOffGrid(row, col, player, link);
+    moveOffGrid(row, col, activePlayer, link);
   }
 }
 
-void Link::moveLink(Link *link, Direction dir) {
+void Grid::moveLink(Link *link, Direction dir) {
   Cell cell;
   size_t row;
   size_t col;
@@ -129,36 +162,36 @@ void Link::moveLink(Link *link, Direction dir) {
       }
     }
   }
-  if (dir = Direction::North) {
+  if (dir == Direction::North) {
     if (isLinkBoost(cell)) {
-      move(cell, row - 2, col, activePlayer, link);
+      move(cell, row - 2, col, activePlayer, link, players);
     }
     else {
-      move(cell, row - 1, col, activePlayer, link);
+      move(cell, row - 1, col, activePlayer, link, players);
     }
   }
-  else if (dir = Direction::East) {
+  else if (dir == Direction::East) {
     if (isLinkBoost(cell)) {
-      move(cell, row, col + 2, activePlayer, link);
+      move(cell, row, col + 2, activePlayer, link, players);
     }
     else {
-      move(cell, row, col + 1, activePlayer, link);
+      move(cell, row, col + 1, activePlayer, link, players);
     }
   }
-  else if (dir = Direction::South) {
+  else if (dir == Direction::South) {
     if (isLinkBoost(cell)) {
-      move(cell, row + 2, col, activePlayer, link);
+      move(cell, row + 2, col, activePlayer, link, players);
     }
     else {
-      move(cell, row + 1, col, activePlayer, link);
+      move(cell, row + 1, col, activePlayer, link, players);
     }
   }
-  else if (dir = Direction::West) {
+  else if (dir == Direction::West) {
     if (isLinkBoost(cell)) {
-      move(cell, row, col - 2, activePlayer, link);
+      move(cell, row, col - 2, activePlayer, link, players);
     }
     else {
-      move(cell, row, col - 1, activePlayer, link);
+      move(cell, row, col - 1, activePlayer, link, players);
     }
   }
 
