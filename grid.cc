@@ -154,6 +154,10 @@ Player *Grid::getPlayer(int playerNum) {
     }
 }
 
+Info Grid::getInfo() {
+    return Info{theGrid};
+}
+
 std::ostream &operator<<(std::ostream &out, const Grid &g) {
     Player *playerOne = g.players[0];
     Player *playerTwo = g.players[1];

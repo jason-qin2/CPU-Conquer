@@ -1,6 +1,7 @@
 #ifndef SUBJECT_H
 #define SUBJECT_H
 #include <vector>
+#include "info.h"
 
 class Observer;
 
@@ -9,6 +10,7 @@ class Subject {
  public:
   void attach(Observer *o);  
   void notifyObservers();
+  virtual Info getInfo() = 0;
 };
 
 #endif
