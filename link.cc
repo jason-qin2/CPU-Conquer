@@ -42,3 +42,7 @@ bool Link::isHidden() {
 int Link::getPlayerNum() {
   return playerNum;
 }
+
+std::vector<Ability*> getAbilities() {
+  return abilities;
+}
