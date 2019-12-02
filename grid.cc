@@ -72,6 +72,8 @@ bool Grid::isValidMove(size_t row, size_t col) {
   } else if (newCell.hasLink()) {
     if (newCell.getLink()->getPlayerNum() == playerNum) {
       return false;
+    } else {
+        return true; 
     }
   } else if (newCell.getServerPort()) {
       if(row == 0 && playerNum == 1) {
@@ -162,31 +164,31 @@ void Grid::moveLink(Link *link, Direction dir) {
       move(row - 2, col, link);
     }
     else {
-      move(row - 2, col, link);
+      move(row - 1, col, link);
     }
   }
   else if (dir == Direction::East) {
     if (isLinkBoost(link)) {
-      move(row - 2, col, link);
+      move(row, col + 2, link);
     }
     else {
-      move(row - 2, col, link);
+      move(row, col + 1, link);
     }
   }
   else if (dir == Direction::South) {
     if (isLinkBoost(link)) {
-      move(row - 2, col, link);
+      move(row + 2, col, link);
     }
     else {
-      move(row - 2, col, link);
+      move(row + 2, col, link);
     }
   }
   else if (dir == Direction::West) {
     if (isLinkBoost(link)) {
-      move(row - 2, col, link);
+      move(row, col - 2, link);
     }
     else {
-      move(row - 2, col, link);
+      move(row, col - 1, link);
     }
   }
 

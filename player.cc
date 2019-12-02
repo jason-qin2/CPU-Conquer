@@ -31,9 +31,13 @@ void fireWall(Grid *theGrid, Ability *ability) {
     } catch (std::out_of_range) {
         throw AbilityError();
     }
-    targetCell->addAbility(ability);
-    theGrid->notifyObservers();
-    return;
+    if(targetCell->getServerPort()) {
+        throw AbilityError();
+    } else {
+        targetCell->addAbility(ability);
+        theGrid->notifyObservers();
+        return;
+    }
 }
 
 void download(int opponentNumber, std::vector<Link *> *opponentLinks, Player *curPlayer) {
