@@ -22,6 +22,7 @@ class Link {
         void addAbility(Ability *ability);
         char getName();
         bool isHidden();
+        int getPlayerNum();
 };
 
 #endif

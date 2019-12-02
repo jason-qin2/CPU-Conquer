@@ -39,4 +39,6 @@ bool Link::isHidden() {
   return hidden;
 }
 
-int Link::getPlayerNum();
+int Link::getPlayerNum() {
+  return playerNum;
+}
