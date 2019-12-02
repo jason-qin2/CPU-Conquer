@@ -3,5 +3,6 @@
 
 class InvalidMove{};
 class AbilityError{};
+class InvalidArguments{};
 
 #endif
