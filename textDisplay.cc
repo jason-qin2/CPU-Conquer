@@ -4,6 +4,9 @@
 #include "cell.h"
 #include "ability.h"
 #include "link.h"
+#include "enums.h"
+#include "subject.h"
+#include "observer.h"
 
 using namespace std;
 
@@ -20,11 +23,11 @@ TextDisplay::TextDisplay() {
 int getFirewallOwner(Cell cell) {
   std::vector<Ability*> abilities = cell.getAbilities();
   for (int i = 0; i < abilities.size(); i++) {
-    if (abilities[i].getAbilityType() == AbilityType::Firewall) {
-      if (abilities[i].getPlayerNum() == 1) {
+    if (abilities[i]->getAbilityType() == AbilityType::FireWall) {
+      if (abilities[i]->getPlayerNum() == 1) {
         return 1;
       }
-      else if (abilities[i].getPlayerNum() == 2) {
+      else if (abilities[i]->getPlayerNum() == 2) {
         return 2;
       }
     }
@@ -35,7 +38,7 @@ int getFirewallOwner(Cell cell) {
 void TextDisplay::notify(Subject &whoFrom) {
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-      Cell curCell = whoFrom[i][j];
+      Cell curCell = whoFrom.getInfo().theGrid[i][j];
       if (curCell.hasLink()) {
         theDisplay[i][j] = curCell.getLink().getName();
       }
@@ -55,7 +58,7 @@ void TextDisplay::notify(Subject &whoFrom) {
   }
 }
 
-std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
+ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
       out << td.theDisplay[i][j];
