@@ -1,6 +1,14 @@
 #include <iostream>
 #include "player.h"
 
+Player::Player(int playerNumber, std::vector<Ability*> abilities, std::vector<Link*> links) {
+    std::vector<Link *> downloadedLinks; 
+    playerNumber = playerNumber;
+    abilities = abilities; 
+    ownedLinks = links;
+    downloadedLinks = downloadedLinks;
+}
+
 void Player::downloadLink(Link *link) {
     downloadedLinks.push_back(link);
 }
@@ -149,4 +157,9 @@ int Player::getAbilityCount() {
 
 std::vector<Link *> &Player::getOwnedLinks() {
     return &ownedLinks; 
+}
+
+Player::~Player() {
+    delete ownedLinks;
+    delete abilities; 
 }
