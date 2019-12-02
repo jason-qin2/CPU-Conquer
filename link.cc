@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Link::Link(int strength, LinkType type, char name) : strength{strength}, linkType{type}, name{name} {
+Link::Link(int strength, LinkType type, char name, int playerNum) : strength{strength}, linkType{type}, name{name}, playerNum{playerNum} {
 }
 
 void Link::changeType() {
@@ -38,3 +38,5 @@ char Link::getName() {
 bool Link::isHidden() {
   return hidden;
 }
+
+int Link::getPlayerNum();

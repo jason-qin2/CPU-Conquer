@@ -12,8 +12,9 @@ class Link {
         LinkType linkType;
         char name;
         bool hidden = true;
+        int playerNum;
     public:
-        Link(int strength, LinkType type, char name);
+        Link(int strength, LinkType type, char name, int playerNum);
         void changeType();
         LinkType getLinkType();
         int getStrength();
