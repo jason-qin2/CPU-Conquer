@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Link::Link(int s, LinkType l, char n) : strength{s}, linkType{l}, name{n} {
+Link::Link(int strength, LinkType type, char name) : strength{strength}, linkType{type}, name{name} {
 }
 
 void Link::changeType() {

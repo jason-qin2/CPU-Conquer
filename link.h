@@ -13,7 +13,7 @@ class Link {
         char name;
         bool hidden = true;
     public:
-        Link(int s, LinkType l, char n);
+        Link(int strength, LinkType type, char name);
         void changeType();
         LinkType getLinkType();
         int getStrength();
