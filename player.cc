@@ -13,8 +13,8 @@ void Player::downloadLink(Link *link) {
 }
 
 void Player::linkBoost(Ability *ability) {
-    char target; 
-    std::cin >> target; 
+    char target;
+    std::cin >> target;
     for(int i = 0; i < ownedLinks.size(); i++) {
         if(ownedLinks[i]->getName() == target) {
             ownedLinks[i]->addAbility(ability);
@@ -83,14 +83,14 @@ void Player::scan(std::vector <Link *> opponentLinks) {
         if(ownedLinks[i]->getName() == linkID) {
             ownedLinks[i]->show();
             theGrid.notifyObservers();
-            return; 
+            return;
         }
     }
     for(int i = 0; i < opponentLinks.size(); i++) {
         if(opponentLinks[i]->getName() == linkID) {
-            opponentLinks[i]->show(); 
+            opponentLinks[i]->show();
             theGrid.notifyObservers();
-            return; 
+            return;
         }
     }
     throw AbilityError();
@@ -148,7 +148,7 @@ int Player::getAbilityCount() {
     int abilityCount = 0;
     for (int i = 0; i < abilities.size(); i++) {
         if(!abilities[i]->getUsed()) {
-            abilityCount++; 
+            abilityCount++;
         }
     }
     return abilityCount;
@@ -164,7 +164,7 @@ std::vector<Link *> &Player::getOwnedLinks() {
 
 void Player::printAbilities(std::ostream &out) {
     for (int i = 0; i < abilities.size(); i++) {
-        out << "Ability #" << i + 1; ": ";
+        out << "Ability #" << i + 1 << ": ";
         out << abilities[i]->getTypeAsStr() << " ";
         out << "Used: ";
         if (abilities[i]->getUsed() == true) {

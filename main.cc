@@ -82,8 +82,8 @@ int main(int argc, char *argv[]) {
             }
           }
           g.moveLink(link, dir);
-          cout << g;
           g.changeActivePlayer();
+          cout << g;
         }
     }
     return 0;
