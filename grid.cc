@@ -225,7 +225,6 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
 std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
     std::vector<Link*> linksArr;
     std::string linkNames;
-    std::cout << linksStr.size();
     if (linksStr.size() != 16) {
         throw InvalidArguments();
     }
@@ -248,7 +247,7 @@ std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
             throw InvalidArguments();
         }
         linksArr.push_back(new Link(linkStrength, linkType, linkNames[0], playerNum));
-        linkNames.erase(linkNames[0]);
+        linkNames.erase(0, 1);
         i++;
     }
     return linksArr;
@@ -261,6 +260,7 @@ bool hasGraphics) {
         // initialize Graphics
     } else {
         textDisplay = new TextDisplay();
+        attach(textDisplay);
     }
     
     std::vector<Ability*> playerOneAbilities = initAbilities(pOneAbil, 1);
@@ -269,11 +269,17 @@ bool hasGraphics) {
     std::vector<Link*> playerTwoLinks = initLinks(pTwoLinks, 2);
     Player *playerOne = new Player(1, playerOneAbilities, playerOneLinks, *this);
     Player *playerTwo = new Player(2, playerTwoAbilities, playerTwoLinks, *this);
+    players.push_back(playerOne);
+    players.push_back(playerTwo);
+    activePlayer = playerOne;
     const int defaultGridSize = 8;
     for (size_t i = 0; i < defaultGridSize; i++) {
+        std::vector<Cell> cellRow;
         for (size_t j = 0; j < defaultGridSize; j++) {
-            theGrid[i].push_back(Cell(i, j));
+            Cell *newCell = new Cell(i, j);
+            cellRow.push_back(*newCell);
         }
+        theGrid.push_back(cellRow);
     }
     for (int i = 0; i < defaultGridSize; i++) {
         if (i == 3 | i == 4) {
@@ -284,13 +290,14 @@ bool hasGraphics) {
             theGrid[7][i].setLink(playerTwoLinks[i]);
         }
     }
+    notifyObservers();
 }
 
 void Grid::printPlayer(std::ostream &out, Player *player) const {
     using namespace std;
     out << "Player " << player->getPlayerNumber() << ':' << endl;
     out << "Downloaded: " << player->getDlDataCount() << "D, ";
-    out << player->getDlVirusCount() << 'V';
+    out << player->getDlVirusCount() << 'V' << endl;
     out << "Abilities: " << player->getAbilityCount() << endl;
     std::vector<Link*> links = player->getOwnedLinks();
     for (int i = 0; i < links.size(); i++) {
@@ -338,7 +345,7 @@ std::ostream &operator<<(std::ostream &out, const Grid &g) {
     Player *playerTwo = g.players[1];
     g.printPlayer(out, playerOne);
     out << "========" << std::endl;
-    out << g.textDisplay;
+    out << *g.textDisplay;
     out << "========" << std::endl;
     g.printPlayer(out, playerTwo);
 }

@@ -122,7 +122,7 @@ void Player::useAbility(int abilityNum){
 }
 
 int Player::getDlVirusCount() {
-    int virusCount;
+    int virusCount = 0;
     for (int i = 0; i < downloadedLinks.size(); i++) {
         if (downloadedLinks[i]->getLinkType() == LinkType::Virus) {
             virusCount++; 
