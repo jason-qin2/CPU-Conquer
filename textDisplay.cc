@@ -14,12 +14,13 @@ TextDisplay::TextDisplay() {
 }
 
 int getFirewallOwner(Cell cell) {
-  for (int i = 0; i < cell.getAbilities().size(); i++) {
-    if (cell.getAbilities()[i].getAbilityType() == AbilityType::Firewall) {
-      if (cell.getAbilities()[i].getPlayerNum() == 1) {
+  std::vector<Ability*> abilities = cell.getAbilities();
+  for (int i = 0; i < abilities.size(); i++) {
+    if (abilities[i].getAbilityType() == AbilityType::Firewall) {
+      if (abilities[i].getPlayerNum() == 1) {
         return 1;
       }
-      else if (cell.getAbilities()[i].getPlayerNum() == 2) {
+      else if (abilities[i].getPlayerNum() == 2) {
         return 2;
       }
     }
