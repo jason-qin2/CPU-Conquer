@@ -53,4 +53,3 @@ void Cell::addAbility(Ability *ability) {
 bool Cell::getServerPort() {
   return hasServerPort;
 } //whether the cell has a server port
-

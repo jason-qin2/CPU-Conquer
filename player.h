@@ -1,6 +1,6 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
-#include <vector> 
+#include <vector>
 #include "link.h"
 #include "enums.h"
 #include "cell.h"
@@ -11,8 +11,8 @@ class Grid;
 class Player {
     private:
         int playerNumber;
-        std::vector<Link*> ownedLinks; 
-        std::vector<Link*> downloadedLinks; 
+        std::vector<Link*> ownedLinks;
+        std::vector<Link*> downloadedLinks;
         std::vector<Ability*> abilities;
         Grid &theGrid;
         void linkBoost(Ability *ability);
@@ -21,7 +21,7 @@ class Player {
         void polarize(int opponentNumber, std::vector<Link *> opponentLinks);
         void scan(std::vector <Link *> opponentLinks);
     public:
-        Player(int playerNumber, std::vector<Ability*> abilities, 
+        Player(int playerNumber, std::vector<Ability*> abilities,
             std::vector<Link*> links, Grid &theGrid);
         void downloadLink(Link *link);
         void useAbility(int abilityNum);

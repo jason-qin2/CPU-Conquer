@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
             try {
                 g.getActivePlayer()->useAbility(abilityNum);
                 usedAbility = true;
+                g.changeActivePlayer();
             } catch (AbilityError) {
                 cout << "Invalid usage of ability" << endl;
             }
@@ -59,6 +60,29 @@ int main(int argc, char *argv[]) {
             cout << g;
         } else if (cmd == "quit") {
             return 0;
+        } else if (cmd == "move") {
+          Link *link;
+          char name;
+          string d;
+          Direction dir;
+          cin >> name;
+          cin >> d;
+          if (d == "up") {
+            dir = Direction::North;
+          } else if (d == "right") {
+            dir = Direction::East;
+          } else if (d == "down") {
+            dir = Direction::South;
+          } else if (d == "left") {
+            dir = Direction::West;
+          }
+          for (int i = 0; i < g.getActivePlayer()->getOwnedLinks().size(); i++) {
+            if (g.getActivePlayer()->getOwnedLinks()[i]->getName() == name) {
+              link = g.getActivePlayer()->getOwnedLinks()[i];
+            }
+          }
+          g.moveLink(link, dir);
+          cout << g;
         }
     }
     return 0;

@@ -3,7 +3,7 @@
 #include "grid.h"
 #include "exceptions.h"
 
-Player::Player(int playerNumber, std::vector<Ability*> abilities, 
+Player::Player(int playerNumber, std::vector<Ability*> abilities,
 std::vector<Link*> links, Grid &theGrid) :
     playerNumber{playerNumber}, ownedLinks{links},
     abilities{abilities}, theGrid{theGrid} {}
@@ -18,7 +18,7 @@ void Player::linkBoost(Ability *ability) {
     for(int i = 0; i < ownedLinks.size(); i++) {
         if(ownedLinks[i]->getName() == target) {
             ownedLinks[i]->addAbility(ability);
-            return; 
+            return;
             }
         }
     throw AbilityError();
@@ -27,7 +27,7 @@ void Player::linkBoost(Ability *ability) {
 void Player::fireWall(Ability *ability) {
     Cell *targetCell;
     int colNum;
-    int rowNum; 
+    int rowNum;
     std::cin >> colNum >> rowNum;
     try {
         targetCell = theGrid.getCell(colNum - 1, rowNum - 1);
@@ -86,7 +86,6 @@ void Player::scan(std::vector <Link *> opponentLinks) {
             return; 
         }
     }
-
     for(int i = 0; i < opponentLinks.size(); i++) {
         if(opponentLinks[i]->getName() == linkID) {
             opponentLinks[i]->show(); 
@@ -103,7 +102,7 @@ void Player::useAbility(int abilityNum){
     }
     Ability *ability = abilities[abilityNum - 1];
     int opponentNumber = (playerNumber == 1) ? 2 : 1;
-    std::vector<Link *> opponentLinks = theGrid.getPlayer(opponentNumber)->getOwnedLinks(); 
+    std::vector<Link *> opponentLinks = theGrid.getPlayer(opponentNumber)->getOwnedLinks();
     AbilityType currAbility = ability->getAbilityType();
 
     if(ability->getUsed()) {
@@ -121,27 +120,28 @@ void Player::useAbility(int abilityNum){
         scan(opponentLinks);
     }
     ability->useAbility();
-    return; 
+    theGrid.notifyObservers();
+    return;
 }
 
 int Player::getDlVirusCount() {
     int virusCount = 0;
     for (int i = 0; i < downloadedLinks.size(); i++) {
         if (downloadedLinks[i]->getLinkType() == LinkType::Virus) {
-            virusCount++; 
+            virusCount++;
         }
     }
-    return virusCount; 
+    return virusCount;
 }
 
 int Player::getDlDataCount() {
-    int dataCount = 0; 
+    int dataCount = 0;
     for (int i = 0; i < downloadedLinks.size(); i++) {
         if (downloadedLinks[i]->getLinkType() == LinkType::Data) {
-            dataCount++; 
+            dataCount++;
         }
     }
-    return dataCount; 
+    return dataCount;
 }
 
 int Player::getAbilityCount() {
@@ -155,11 +155,11 @@ int Player::getAbilityCount() {
 }
 
 int Player::getPlayerNumber() {
-    return playerNumber; 
+    return playerNumber;
 }
 
 std::vector<Link *> &Player::getOwnedLinks() {
-    return ownedLinks; 
+    return ownedLinks;
 }
 
 void Player::printAbilities(std::ostream &out) {
@@ -178,10 +178,10 @@ void Player::printAbilities(std::ostream &out) {
 
 Player::~Player() {
     for(auto links : ownedLinks) {
-        delete links; 
+        delete links;
     }
     for(auto ability : abilities) {
-        delete ability; 
+        delete ability;
     }
     ownedLinks.clear();
     abilities.clear();

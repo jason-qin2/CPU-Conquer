@@ -73,15 +73,15 @@ bool Grid::isValidMove(size_t row, size_t col) {
     if (newCell.getLink()->getPlayerNum() == playerNum) {
       return false;
     } else {
-        return true; 
+        return true;
     }
   } else if (newCell.getServerPort()) {
       if(row == 0 && playerNum == 1) {
-          return false; 
+          return false;
       } else if(row == 7 && playerNum == 2) {
-          return false; 
+          return false;
       } else {
-          return true; 
+          return true;
       }
   }
 }
@@ -102,16 +102,16 @@ void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
 
 bool willBattle(Cell cell) {
     if(cell.hasLink()) {
-        return true; 
+        return true;
     } else {
-        return false; 
+        return false;
     }
 }
 
 void battle(Link *ownLink, Link *opponentLink, Player *activePlayer, std::vector<Player*> players) {
     ownLink->show();
     opponentLink->show();
-    int opponentID = (activePlayer->getPlayerNumber() == 1) ? 2 : 1; 
+    int opponentID = (activePlayer->getPlayerNumber() == 1) ? 2 : 1;
     if(ownLink->getStrength() >= opponentLink->getStrength()) {
         activePlayer->downloadLink(opponentLink);
     } else {
@@ -140,7 +140,7 @@ void Grid::move(size_t row, size_t col, Link *link) {
         Link *opponentLink = cell.getLink();
         battle(link, opponentLink, activePlayer, players );
     }
-    cell.setLink(link);
+    theGrid[row][col].setLink(link);
   }
   else {
     moveOffGrid(row, col, activePlayer, link);
@@ -180,7 +180,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       move(row + 2, col, link);
     }
     else {
-      move(row + 2, col, link);
+      move(row + 1, col, link);
     }
   }
   else if (dir == Direction::West) {
@@ -191,7 +191,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       move(row, col - 1, link);
     }
   }
-
+  notifyObservers();
 } // moves a link a certain direction
 
 std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNum) {
@@ -253,8 +253,8 @@ std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
     return linksArr;
 }
 
-void Grid::init(std::string pOneAbil, std::string pTwoAbil, 
-std::string pOneLinks, std::string pTwoLinks, 
+void Grid::init(std::string pOneAbil, std::string pTwoAbil,
+std::string pOneLinks, std::string pTwoLinks,
 bool hasGraphics) {
     if (hasGraphics) {
         // initialize Graphics
@@ -262,7 +262,7 @@ bool hasGraphics) {
         textDisplay = new TextDisplay();
         attach(textDisplay);
     }
-    
+
     std::vector<Ability*> playerOneAbilities = initAbilities(pOneAbil, 1);
     std::vector<Ability*> playerTwoAbilities = initAbilities(pTwoAbil, 2);
     std::vector<Link*> playerOneLinks = initLinks(pOneLinks, 1);
@@ -340,6 +340,15 @@ Player *Grid::getActivePlayer() {
     return activePlayer;
 }
 
+void Grid::changeActivePlayer() {
+    for (auto player: players) {
+        if (player->getPlayerNumber() != activePlayer->getPlayerNumber()) {
+            activePlayer = player;
+            return;
+        }
+    }
+}
+
 std::ostream &operator<<(std::ostream &out, const Grid &g) {
     Player *playerOne = g.players[0];
     Player *playerTwo = g.players[1];
@@ -348,4 +357,5 @@ std::ostream &operator<<(std::ostream &out, const Grid &g) {
     out << *g.textDisplay;
     out << "========" << std::endl;
     g.printPlayer(out, playerTwo);
+    return out;
 }
