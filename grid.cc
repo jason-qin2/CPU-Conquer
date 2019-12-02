@@ -74,7 +74,13 @@ bool Grid::isValidMove(size_t row, size_t col) {
       return false;
     }
   } else if (newCell.getServerPort()) {
-    return false;
+      if(row == 0 && playerNum == 1) {
+          return false; 
+      } else if(row == 7 && playerNum == 2) {
+          return false; 
+      } else {
+          return true; 
+      }
   }
 }
 
@@ -111,7 +117,7 @@ void battle(Link *ownLink, Link *opponentLink, Player *activePlayer, std::vector
     }
 }
 
-void serverport(Link *link, size_t row, std::vector<Player*> players) {
+void Grid::serverport(size_t row, Link *link) {
     if(row == 0) {
         players[0]->downloadLink(link);
     } else {
@@ -126,7 +132,7 @@ void Grid::move(size_t row, size_t col, Link *link) {
       firewall(cell, activePlayer);
     }
     if(cell.getServerPort()) {
-        serverport(link, row, players);
+        serverport(row, link);
     }
     if(willBattle(cell)) {
         Link *opponentLink = cell.getLink();

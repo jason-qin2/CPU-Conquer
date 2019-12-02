@@ -21,6 +21,7 @@ class Grid : public Subject {
         std::vector<Ability*> initAbilities(std::string abilitiesStr, int playerNum);
         std::vector<Link*> initLinks(std::string linksStr, int playerNum);
         void move(size_t row, size_t col, Link *link);
+        void serverport(size_t row, Link *link);
         bool isValidMove(size_t row, size_t col);
     public:
         bool isFinished(); // returns True if the game is finished
