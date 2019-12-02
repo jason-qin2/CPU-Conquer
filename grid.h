@@ -25,6 +25,7 @@ class Grid : public Subject {
         void init(std::string pOneAbil, std::string pTwoAbil, std::string pOneLinks, 
             std::string pTwoLinks, bool hasGraphics); // initializes the game
         void moveLink(Link *link, Direction dir); // moves a link a certain direction
+        Cell *getCell(int row, int col);
 
         friend std::ostream &operator<<(std::ostream &out, const Grid &g);
 };

@@ -1,4 +1,5 @@
 #include "grid.h"
+#include "exceptions.h"
 
 bool Grid::isFinished() {
     for (auto &player: players) {
@@ -45,7 +46,7 @@ std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
     std::vector<Link*> linksArr;
     std::string linkNames;
     if (linksStr.size() != 16) {
-        throw; //ERROR
+        throw InvalidArguments();
     }
     if (playerNum == 1) {
         linkNames = "abcdefgh";
@@ -59,11 +60,11 @@ std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
         } else if (linksStr[i] == 'D') {
             linkType = LinkType::Data;
         } else {
-            throw; //ERROR
+            throw InvalidArguments();
         }
         int linkStrength = linksStr[i + 1] - '0';
         if (linkStrength > 4 || linkStrength < 1) {
-            throw; //ERROR
+            throw InvalidArguments();
         }
         linksArr.push_back(new Link(linkStrength, linkType, linkNames[0]));
         linkNames.erase(linkNames[0]);
@@ -128,6 +129,10 @@ void Grid::printPlayer(std::ostream &out, Player *player) const {
             out << ' ';
         }
     }
+}
+
+Cell *Grid::getCell(int row, int col) {
+    return &theGrid[row][col];
 }
 
 std::ostream &operator<<(std::ostream &out, const Grid &g) {
