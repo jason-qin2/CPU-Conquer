@@ -20,6 +20,8 @@ class Grid : public Subject {
         void printPlayer(std::ostream &out, Player *player) const;
         std::vector<Ability*> initAbilities(std::string abilitiesStr, int playerNum);
         std::vector<Link*> initLinks(std::string linksStr, int playerNum);
+        void move(size_t row, size_t col, Link *link);
+        bool isValidMove(size_t row, size_t col);
     public:
         bool isFinished(); // returns True if the game is finished
         Player *whoWon(); // returns the winning player
