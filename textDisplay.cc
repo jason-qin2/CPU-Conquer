@@ -1,5 +1,9 @@
 #include <vector>
+#include <iostream>
 #include "textDisplay.h"
+#include "cell.h"
+#include "ability.h"
+#include "link.h"
 
 using namespace std;
 
