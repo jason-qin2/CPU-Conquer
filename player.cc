@@ -132,7 +132,7 @@ int Player::getDlVirusCount() {
 }
 
 int Player::getDlDataCount() {
-    int dataCount; 
+    int dataCount = 0; 
     for (int i = 0; i < downloadedLinks.size(); i++) {
         if (downloadedLinks[i]->getLinkType() == LinkType::Data) {
             dataCount++; 
