@@ -1,3 +1,5 @@
+#include <vector>
+#include <iostream>
 #include "grid.h"
 #include "exceptions.h"
 
@@ -9,21 +11,188 @@ bool Grid::isFinished() {
             return true;
         }
     }
-    return false;
 }
 
 Player *Grid::whoWon() {
-    Player *playerOne = players[0];
-    Player *playerTwo = players[1];
-    if ((playerOne->getDlDataCount() >= 4) || 
-        (playerTwo->getDlVirusCount() >= 4)) {
-        return playerOne;
-    } else if ((playerTwo->getDlDataCount() >= 4) || 
-        (playerOne->getDlVirusCount() >= 4)) {
-        return playerTwo;
-    }
-    return nullptr;
+  Player *playerOne = players[0];
+  Player *playerTwo = players[1];
+  if ((playerOne->getDlDataCount() >= 4) ||
+  (playerTwo->getDlDataCount() >= 4)) {
+    return playerOne;
+  } else if ((playerTwo->getDlDataCount() >= 4) ||
+  (playerOne->getDlDataCount() >= 4)) {
+    return playerTwo;
+  }
+  return nullptr;
 }
+
+
+bool isFirewall(Cell cell) {
+  for (int i = 0; i < cell.getAbilities().size(); i++) {
+    if (cell.getAbilities()[i]->getAbilityType() == AbilityType::FireWall) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool isLinkBoost(Link *link) {
+  for (int i = 0; i < link->getAbilities().size(); i++) {
+    if (link->getAbilities()[i]->getAbilityType() == AbilityType::LinkBoost) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void firewall(Cell cell, Player *activePlayer) {
+  Link *link = cell.getLink();
+  int playerNum;
+  for (int i = 0; i < cell.getAbilities().size(); i++) {
+    if (cell.getLink()->getAbilities()[i]->getAbilityType() == AbilityType::FireWall) {
+      playerNum = cell.getAbilities()[i]->getPlayerNum();
+    }
+  }
+  if (activePlayer->getPlayerNumber() == playerNum) {
+    return;
+  }
+  else {
+    link->show();
+    if (link->getLinkType() == LinkType::Virus) {
+      activePlayer->downloadLink(link);
+    }
+  }
+}
+
+bool Grid::isValidMove(size_t row, size_t col) {
+  int playerNum = activePlayer->getPlayerNumber();
+  Cell newCell = theGrid[row][col];
+  if (row < 8 && col < 8) {
+    return true;
+  } else if (newCell.hasLink()) {
+    if (newCell.getLink()->getPlayerNum() == playerNum) {
+      return false;
+    } else {
+        return true; 
+    }
+  } else if (newCell.getServerPort()) {
+      if(row == 0 && playerNum == 1) {
+          return false; 
+      } else if(row == 7 && playerNum == 2) {
+          return false; 
+      } else {
+          return true; 
+      }
+  }
+}
+
+void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
+  int playerNum = activePlayer->getPlayerNumber();
+  if (playerNum == 1) {
+    if (row > 7 && col >= 0 && col <= 7) {
+      activePlayer->downloadLink(link);
+    }
+  }
+  if (playerNum == 2) {
+    if (row < 0 && col >= 0 && col <= 7) {
+      activePlayer->downloadLink(link);
+    }
+  }
+}
+
+bool willBattle(Cell cell) {
+    if(cell.hasLink()) {
+        return true; 
+    } else {
+        return false; 
+    }
+}
+
+void battle(Link *ownLink, Link *opponentLink, Player *activePlayer, std::vector<Player*> players) {
+    ownLink->show();
+    opponentLink->show();
+    int opponentID = (activePlayer->getPlayerNumber() == 1) ? 2 : 1; 
+    if(ownLink->getStrength() >= opponentLink->getStrength()) {
+        activePlayer->downloadLink(opponentLink);
+    } else {
+        players[opponentID - 1]->downloadLink(ownLink);
+    }
+}
+
+void Grid::serverport(size_t row, Link *link) {
+    if(row == 0) {
+        players[0]->downloadLink(link);
+    } else {
+        players[1]->downloadLink(link);
+    }
+}
+
+void Grid::move(size_t row, size_t col, Link *link) {
+  if (isValidMove(row, col)) {
+      Cell cell = theGrid[row][col];
+    if (isFirewall(cell)) {
+      firewall(cell, activePlayer);
+    }
+    if(cell.getServerPort()) {
+        serverport(row, link);
+    }
+    if(willBattle(cell)) {
+        Link *opponentLink = cell.getLink();
+        battle(link, opponentLink, activePlayer, players );
+    }
+    cell.setLink(link);
+  }
+  else {
+    moveOffGrid(row, col, activePlayer, link);
+  }
+}
+
+void Grid::moveLink(Link *link, Direction dir) {
+  size_t row;
+  size_t col;
+  for (int i = 0; i < theGrid.size(); i++) {
+    for (int j = 0; j < theGrid.size(); j++) {
+      if (link == theGrid[i][j].getLink()) {
+        row = i;
+        col = j;
+        theGrid[i][j].removeLink();
+      }
+    }
+  }
+  if (dir == Direction::North) {
+    if (isLinkBoost(link)) {
+      move(row - 2, col, link);
+    }
+    else {
+      move(row - 1, col, link);
+    }
+  }
+  else if (dir == Direction::East) {
+    if (isLinkBoost(link)) {
+      move(row, col + 2, link);
+    }
+    else {
+      move(row, col + 1, link);
+    }
+  }
+  else if (dir == Direction::South) {
+    if (isLinkBoost(link)) {
+      move(row + 2, col, link);
+    }
+    else {
+      move(row + 2, col, link);
+    }
+  }
+  else if (dir == Direction::West) {
+    if (isLinkBoost(link)) {
+      move(row, col - 2, link);
+    }
+    else {
+      move(row, col - 1, link);
+    }
+  }
+
+} // moves a link a certain direction
 
 std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNum) {
     std::vector<Ability*> abilitiesArr;
