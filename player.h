@@ -4,6 +4,7 @@
 #include "link.h"
 #include "enums.h"
 #include "grid.h"
+#include "cell.h"
 #include "ability.h"
 
 class Player {
@@ -21,6 +22,7 @@ class Player {
         int getAbilityCount();
         int getPlayerNumber();
         std::vector<Link*> &getOwnedLinks();
+        ~Player();
 };
 
 #endif
