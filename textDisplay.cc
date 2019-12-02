@@ -40,9 +40,9 @@ void TextDisplay::notify(Subject &whoFrom) {
     for (int j = 0; j < 8; j++) {
       Cell curCell = whoFrom.getInfo().theGrid[i][j];
       if (curCell.hasLink()) {
-        theDisplay[i][j] = curCell.getLink().getName();
+        theDisplay[i][j] = curCell.getLink()->getName();
       }
-      else if (curCell.hasServerPort()) {
+      else if (curCell.getServerPort()) {
         theDisplay[i][j] = 'S';
       }
       else if (getFirewallOwner(curCell) == 1) {
