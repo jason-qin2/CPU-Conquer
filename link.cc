@@ -16,7 +16,7 @@ void Link::changeType() {
 }
 
 LinkType Link::getLinkType() {
-  return linktype;
+  return linkType;
 }
 
 int Link::getStrength() {

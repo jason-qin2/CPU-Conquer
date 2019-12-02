@@ -42,7 +42,7 @@ void Cell::setLink(Link *link) {
   this->link = link;
 } //places a link on the cell
 
-void Cell:removeLink() {
+void Cell::removeLink() {
   link = nullptr;
 } //removes link on the cell
 
@@ -50,7 +50,7 @@ void Cell::addAbility(Ability *ability) {
   abilities.push_back(ability);
 } //adds an ability to the link on the cell
 
-bool Cell::hasServerPort() {
+bool Cell::getServerPort() {
   return hasServerPort;
 } //whether the cell has a server port
 

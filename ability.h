@@ -1,6 +1,7 @@
 #ifndef _ABILITY_H
 #define _ABILITY_H
 
+#include <string>
 #include "enums.h"
 
 class Ability {
@@ -14,6 +15,7 @@ class Ability {
         AbilityType getAbilityType();
         bool getUsed();
         int getPlayerNum();
+        std::string getTypeAsStr();
 };
 
 #endif

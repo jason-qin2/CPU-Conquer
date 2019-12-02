@@ -22,3 +22,17 @@ bool Ability::getUsed() {
 int Ability::getPlayerNum() {
     return playerNum;
 }
+
+std::string Ability::getTypeAsStr() {
+    if (type == AbilityType::LinkBoost) {
+        return "Link boost";
+    } else if (type == AbilityType::FireWall) {
+        return "Firewall";
+    } else if (type == AbilityType::Download) {
+        return "Download";
+    } else if (type == AbilityType::Polarize) {
+        return "Polarize";
+    } else if (type == AbilityType::Scan) {
+        return "Scan";
+    }
+}

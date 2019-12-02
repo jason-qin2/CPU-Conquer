@@ -56,6 +56,7 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
 std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
     std::vector<Link*> linksArr;
     std::string linkNames;
+    std::cout << linksStr.size();
     if (linksStr.size() != 16) {
         throw InvalidArguments();
     }
@@ -84,20 +85,21 @@ std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
     return linksArr;
 }
 
-void Grid::init(std::string pOneAbil = "LFDSP", std::string pTwoAbil = "LFDSP", 
-std::string pOneLinks = "V1V2V3V4D1D2D3D4", std::string pTwoLinks = "V1V2V3V4D1D2D3D4", 
+void Grid::init(std::string pOneAbil, std::string pTwoAbil, 
+std::string pOneLinks, std::string pTwoLinks, 
 bool hasGraphics) {
     if (hasGraphics) {
         // initialize Graphics
     } else {
         textDisplay = new TextDisplay();
     }
+    
     std::vector<Ability*> playerOneAbilities = initAbilities(pOneAbil, 1);
     std::vector<Ability*> playerTwoAbilities = initAbilities(pTwoAbil, 2);
     std::vector<Link*> playerOneLinks = initLinks(pOneLinks, 1);
     std::vector<Link*> playerTwoLinks = initLinks(pTwoLinks, 2);
-    Player *playerOne = new Player(1, playerOneAbilities, playerOneLinks);
-    Player *playerTwo = new Player(2, playerTwoAbilities, playerTwoLinks);
+    Player *playerOne = new Player(1, playerOneAbilities, playerOneLinks, *this);
+    Player *playerTwo = new Player(2, playerTwoAbilities, playerTwoLinks, *this);
     const int defaultGridSize = 8;
     for (size_t i = 0; i < defaultGridSize; i++) {
         for (size_t j = 0; j < defaultGridSize; j++) {
@@ -158,10 +160,16 @@ Info Grid::getInfo() {
     return Info{theGrid};
 }
 
+Player *Grid::getActivePlayer() {
+    return activePlayer;
+}
+
 std::ostream &operator<<(std::ostream &out, const Grid &g) {
     Player *playerOne = g.players[0];
     Player *playerTwo = g.players[1];
     g.printPlayer(out, playerOne);
+    out << "========" << std::endl;
     out << g.textDisplay;
+    out << "========" << std::endl;
     g.printPlayer(out, playerTwo);
 }

@@ -12,19 +12,15 @@ void printInvalidArgs(char *programName) {
 }
 
 int main(int argc, char *argv[]) {
-    string pOneAbils;
-    string pTwoAbils;
-    string pOneLinks;
-    string pTwoLinks;
+    string pOneAbils = "LFDSP";
+    string pTwoAbils = "LFDSP";
+    string pOneLinks = "V1V2V3V4D1D2D3D4";
+    string pTwoLinks = "V1V2V3V4D1D2D3D4";
     bool enabledGraphics = false;
     for (int i = 1; i < argc; i++) {
         if (argv[i] == "-graphics") {
             enabledGraphics = true;
         } else {
-            if (argc <= i + 1) {
-                printInvalidArgs(argv[0]);
-                return 1;
-            }
             if (argv[i] == "-ability1") {
                 pOneAbils = argv[i + 1];
             } else if (argv[i] == "-ability2") {
@@ -43,6 +39,27 @@ int main(int argc, char *argv[]) {
     } catch (InvalidArguments) {
         printInvalidArgs(argv[0]);
         return 1;
+    }
+    string cmd;
+    bool usedAbility = false;
+    while (true) {
+        cin >> cmd;
+        if (cmd == "abilities") {
+            g.getActivePlayer()->printAbilities(cout);
+        } else if (cmd == "ability") {
+            int abilityNum;
+            cin >> abilityNum;
+            try {
+                g.getActivePlayer()->useAbility(abilityNum);
+                usedAbility = true;
+            } catch (AbilityError) {
+                cout << "Invalid usage of ability" << endl;
+            }
+        } else if (cmd == "board") {
+            cout << g;
+        } else if (cmd == "quit") {
+            return 0;
+        }
     }
     return 0;
 }

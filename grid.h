@@ -29,6 +29,7 @@ class Grid : public Subject {
         Info getInfo() override;
         Cell *getCell(int row, int col);
         Player *getPlayer(int playerNum);
+        Player *getActivePlayer();
 
         friend std::ostream &operator<<(std::ostream &out, const Grid &g);
 };

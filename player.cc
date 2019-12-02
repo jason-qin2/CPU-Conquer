@@ -1,9 +1,12 @@
 #include <iostream>
 #include "player.h"
+#include "grid.h"
 #include "exceptions.h"
 
-Player::Player(int playerNumber, std::vector<Ability*> abilities, std::vector<Link*> links) :
-    playerNumber{playerNumber}, abilities{abilities}, ownedLinks{links} {}
+Player::Player(int playerNumber, std::vector<Ability*> abilities, 
+std::vector<Link*> links, Grid &theGrid) :
+    playerNumber{playerNumber}, abilities{abilities}, 
+    ownedLinks{links}, theGrid{theGrid} {}
 
 void Player::downloadLink(Link *link) {
     downloadedLinks.push_back(link);
@@ -86,15 +89,15 @@ void scan(std::vector <Link *> *opponentLinks, std::vector<Link *> ownedLinks ) 
     throw AbilityError();
 }
 
-
-
-void Player::useAbility(Ability *ability, Grid *theGrid){
-    int abilityNum;
+void Player::useAbility(int abilityNum){
+    if (abilityNum < 1) {
+        throw AbilityError();
+    }
+    Ability *ability = abilities[abilityNum - 1];
     int target; 
     int opponentNumber = (playerNumber == 1) ? 2 : 1;
-    std::vector<Link *> *opponentLinks = theGrid->getPlayer(opponentNumber)->getOwnedLinks(); 
+    std::vector<Link *> opponentLinks = theGrid.getPlayer(opponentNumber)->getOwnedLinks(); 
     AbilityType currAbility = ability->getAbilityType();
-    std::cin >> abilityNum; 
 
     if(ability->getUsed()) {
         throw AbilityError();
@@ -102,13 +105,13 @@ void Player::useAbility(Ability *ability, Grid *theGrid){
     if(currAbility == AbilityType::LinkBoost) {
         linkBoost(ability, ownedLinks);
     } else if(currAbility == AbilityType::FireWall) {
-        fireWall(theGrid, ability);
+        fireWall(&theGrid, ability);
     } else if(currAbility == AbilityType::Download) {
-        download(opponentNumber, opponentLinks, this);
+        download(opponentNumber, &opponentLinks, this);
     } else if(currAbility == AbilityType::Polarize) {
-        polarize(opponentNumber, opponentLinks, ownedLinks);
+        polarize(opponentNumber, &opponentLinks, ownedLinks);
     } else if(currAbility == AbilityType::Scan) { 
-        scan(opponentLinks, ownedLinks);
+        scan(&opponentLinks, ownedLinks);
     }
     ability->useAbility();
     return; 
@@ -148,6 +151,20 @@ int Player::getPlayerNumber() {
 
 std::vector<Link *> &Player::getOwnedLinks() {
     return ownedLinks; 
+}
+
+void Player::printAbilities(std::ostream &out) {
+    for (int i = 0; i < abilities.size(); i++) {
+        out << "Ability #" << i + 1; ": ";
+        out << abilities[i]->getTypeAsStr() << " ";
+        out << "Used: ";
+        if (abilities[i]->getUsed() == true) {
+            out << "Yes";
+        } else {
+            out << "No";
+        }
+        out << std::endl;
+    }
 }
 
 Player::~Player() {
