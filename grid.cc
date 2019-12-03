@@ -71,6 +71,7 @@ void firewall(Cell cell, Player *activePlayer, Link *link) {
   } else if(link->getLinkType() == LinkType::Virus) {
     link->show();
     activePlayer->downloadLink(link);
+    cell.removeLink();
   } else {
     link->show();
     cell.setLink(link);
@@ -91,7 +92,6 @@ bool Grid::isValidMove(size_t row, size_t col) {
       return false;
     }
   }
-
   return true;
 }
 
@@ -143,7 +143,7 @@ void Grid::remove(Link *link) {
     for (size_t j = 0; j < theGrid.size(); j++) {
       if (link == theGrid[i][j].getLink()) {
         theGrid[i][j].removeLink();
-        return; 
+        return;
       }
     }
   }
@@ -151,10 +151,10 @@ void Grid::remove(Link *link) {
 }
 
 void Grid::spawnLink(Link *link) {
-    srand(time(NULL)); 
+    srand(time(NULL));
     while(1) {
       int randCol = rand() % 8;
-      int randRow = rand() % 8; 
+      int randRow = rand() % 8;
       if(!theGrid[randRow][randCol].hasLink()) {
         theGrid[randRow][randCol].setLink(link);
         break;
@@ -166,9 +166,18 @@ void Grid::move(size_t row, size_t col, Link *link) {
   if (isValidMove(row, col)) {
     Cell cell = theGrid[row][col];
     if (isFirewall(cell)) {
-      firewall(cell, activePlayer, link);
-      return; 
+      firewall(theGrid[row][col], activePlayer, link);
+      bool downloaded = false;
+      for (int i = 0; i < activePlayer->getDownloadedLinks().size(); i++) {
+        if (activePlayer->getDownloadedLinks()[i] == link) {
+          downloaded = true;
+        }
+      }
+      if (downloaded) {
+        return;
+      }
     }
+
     if(willBattle(cell)) {
       Link *opponentLink = cell.getLink();
       if (battle(link, opponentLink, activePlayer, players)->getName() == link->getName()) {
@@ -180,6 +189,7 @@ void Grid::move(size_t row, size_t col, Link *link) {
       }
     }
     theGrid[row][col].setLink(link);
+    theGrid[row][col].notifyObservers();
   }
   else {
     moveOffGrid(row, col, activePlayer, link);
@@ -282,6 +292,7 @@ void Grid::moveLink(Link *link, Direction dir) {
         }
       } else {
         move(row + 1, col, link);
+        theGrid[row][col].removeLink();
       }
       if (theGrid[row+1][col].hasLink()) {
         theGrid[row][col].removeLink();
@@ -337,14 +348,14 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
       SCCount++;
     } else if (c == 'R') {
       abilitiesArr.push_back(new Ability(AbilityType::Relocate, playerNum));
-      RLCount++; 
+      RLCount++;
     } else if (c == 'T') {
       abilitiesArr.push_back(new Ability(AbilityType::SuperStrength, playerNum));
-      SSCount++; 
+      SSCount++;
     } else if (c == 'X') {
       abilitiesArr.push_back(new Ability(AbilityType::Steal, playerNum));
       STCount++;
-    } 
+    }
   }
   if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || SCCount > 2 || STCount > 2 || SSCount > 2) {
     throw InvalidArguments();

@@ -108,7 +108,7 @@ void Player::scan(std::vector <Link *> opponentLinks) {
 
 void Player::relocate(std::vector<Link *> opponentLinks) {
     char linkID;
-    Link *link = nullptr; 
+    Link *link = nullptr;
     std::cin >> linkID;
     for(size_t i = 0; i < ownedLinks.size(); i++) {
         if(ownedLinks[i]->getName() == linkID) {
@@ -120,7 +120,7 @@ void Player::relocate(std::vector<Link *> opponentLinks) {
             link = opponentLinks[i];
         }
     }
-    //if link doesn't exist the throw error, otherwise find it on grid and remove it 
+    //if link doesn't exist the throw error, otherwise find it on grid and remove it
     if(link == nullptr) {
         throw AbilityError();
     } else {
@@ -128,7 +128,7 @@ void Player::relocate(std::vector<Link *> opponentLinks) {
     }
     //Adds link to new location on the grid
     theGrid.spawnLink(link);
-    return; 
+    return;
 }
 
 void Player::superStrength(std::vector<Link *> opponentLinks) {
@@ -147,7 +147,7 @@ void Player::superStrength(std::vector<Link *> opponentLinks) {
         }
     }
     throw AbilityError();
-    
+
 }
 std::vector<Ability*> Player::getAbilities() {
   return abilities;
