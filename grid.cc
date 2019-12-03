@@ -455,7 +455,12 @@ void Grid::init(std::string pOneAbil, std::string pTwoAbil,
   }
 
   Cell *Grid::getCell(int row, int col) {
-    return &theGrid[row][col];
+    if(row < 0 || col < 0 || row >= 8 || col >= 8) {
+      throw std::out_of_range("This is not valid");
+    } else {
+      return &theGrid[row][col];
+    }
+    
   }
 
   Player *Grid::getPlayer(int playerNum) {
