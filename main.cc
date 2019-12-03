@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
         printInvalidArgs(argv[0]);
         return 1;
     }
+    std::cout << g;
     string cmd;
     streambuf* streamBuffer = 0; // default cin streambuf object
     ifstream inputFile;     // file stream for reading input
@@ -57,6 +58,7 @@ int main(int argc, char *argv[]) {
             std::cin >> abilityNum;
             try {
                 g.getActivePlayer()->useAbility(abilityNum);
+                std::cout << g;
                 usedAbility = true;
             } catch (AbilityError) {
                 std::cout << "Invalid usage of ability" << endl;
