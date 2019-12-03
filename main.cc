@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include "grid.h"
 #include "exceptions.h"
@@ -41,9 +42,10 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     string cmd;
+    streambuf* streamBuffer = 0; // default cin streambuf object
+    ifstream inputFile;     // file stream for reading input
     bool usedAbility = false;
-    while (true) {
-        cin >> cmd;
+    while (cin >> cmd) {
         if (cmd == "abilities") {
             g.getActivePlayer()->printAbilities(cout);
         } else if (cmd == "ability") {
@@ -58,6 +60,12 @@ int main(int argc, char *argv[]) {
             }
         } else if (cmd == "board") {
             cout << g;
+        } else if (cmd == "sequence") {
+            string fileName;
+            cin >> fileName;
+            inputFile.open(fileName);
+            streamBuffer = cin.rdbuf(inputFile.rdbuf());
+            continue;
         } else if (cmd == "quit") {
             return 0;
         } else if (cmd == "move") {
@@ -85,6 +93,9 @@ int main(int argc, char *argv[]) {
           g.changeActivePlayer();
           cout << g;
         }
+    }
+    if (streamBuffer) {
+        cin.rdbuf(streamBuffer);
     }
     return 0;
 }
