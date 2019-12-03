@@ -69,18 +69,18 @@ bool Grid::isValidMove(size_t row, size_t col) {
   int playerNum = activePlayer->getPlayerNumber();
   Cell newCell = theGrid[row][col];
   if(newCell.hasLink() && newCell.getLink()->getPlayerNum() == playerNum) {
-    return false; 
+    return false;
   } else if( row < 0 || col < 0 || row > 7 || col > 7) {
-    return false; 
+    return false;
   } else if(newCell.getServerPort()) {
     if(row == 0 && playerNum == 1) {
-      return false; 
+      return false;
     } else if(row == 7 && playerNum == 2) {
-      return false; 
-    } 
-  } 
+      return false;
+    }
+  }
 
-  return true; 
+  return true;
 }
 
 void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
@@ -89,13 +89,12 @@ void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
     if (row > 7 && col >= 0 && col <= 7) {
       activePlayer->downloadLink(link);
     }
-  }
-  if (playerNum == 2) {
+  } else if (playerNum == 2) {
     if (row < 0 && col >= 0 && col <= 7) {
       activePlayer->downloadLink(link);
     }
   }
-  throw InvalidMove();
+    throw InvalidMove();
 }
 
 bool willBattle(Cell cell) {
@@ -159,34 +158,106 @@ void Grid::moveLink(Link *link, Direction dir) {
   }
   if (dir == Direction::North) {
     if (isLinkBoost(link)) {
-      move(row - 2, col, link);
+      if (row == 0) {
+        if (activePlayer->getPlayerNumber() == 2) {
+          activePlayer->downloadLink(link);
+        } else {
+          move(row, col, link);
+          throw InvalidMove();
+        }
+      } else {
+        move(row - 2, col, link);
+      }
     }
     else {
-      move(row - 1, col, link);
+      if (row == 0) {
+        if (activePlayer->getPlayerNumber() == 2) {
+          activePlayer->downloadLink(link);
+        } else {
+          move(row, col, link);
+          throw InvalidMove();
+        }
+      } else {
+        move(row - 1, col, link);
+      }
     }
   }
   else if (dir == Direction::East) {
     if (isLinkBoost(link)) {
-      move(row, col + 2, link);
+      if (col == 7) {
+        if (activePlayer->getPlayerNumber() == 2) {
+          activePlayer->downloadLink(link);
+        } else {
+          move(row, col, link);
+          throw InvalidMove();
+        }
+      } else {
+        move(row, col + 2, link);
+      }
     }
     else {
-      move(row, col + 1, link);
+      if (col == 7) {
+        if (activePlayer->getPlayerNumber() == 2) {
+          activePlayer->downloadLink(link);
+        } else {
+          move(row, col, link);
+          throw InvalidMove();
+        }
+      } else {
+        move(row, col + 1, link);
+      }
     }
   }
   else if (dir == Direction::South) {
     if (isLinkBoost(link)) {
-      move(row + 2, col, link);
+      if (row == 7) {
+        if (activePlayer->getPlayerNumber() == 2) {
+          activePlayer->downloadLink(link);
+        } else {
+          move(row, col, link);
+          throw InvalidMove();
+        }
+      } else {
+        move(row + 2, col, link);
+      }
     }
     else {
-      move(row + 1, col, link);
+      if (row == 7) {
+        if (activePlayer->getPlayerNumber() == 2) {
+          activePlayer->downloadLink(link);
+        } else {
+          move(row, col, link);
+          throw InvalidMove();
+        }
+      } else {
+        move(row + 1, col, link);
+      }
     }
   }
   else if (dir == Direction::West) {
     if (isLinkBoost(link)) {
-      move(row, col - 2, link);
+      if (col == 0) {
+        if (activePlayer->getPlayerNumber() == 2) {
+          activePlayer->downloadLink(link);
+        } else {
+          move(row, col, link);
+          throw InvalidMove();
+        }
+      } else {
+        move(row, col - 2, link);
+      }
     }
     else {
-      move(row, col - 1, link);
+      if (col == 0) {
+        if (activePlayer->getPlayerNumber() == 2) {
+          activePlayer->downloadLink(link);
+        } else {
+          move(row, col, link);
+          throw InvalidMove();
+        }
+      } else {
+        move(row, col - 1, link);
+      }
     }
   }
   notifyObservers();
