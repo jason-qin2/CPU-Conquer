@@ -58,10 +58,8 @@ bool isLinkBoost(Link *link) {
 }
 
 void firewall(Cell cell, Player *activePlayer, Link *link) {
-  std::cout << "biggest cock" << std::endl;
   int playerNum;
   for (size_t i = 0; i < cell.getAbilities().size(); i++) {
-    std::cout << "worlds biggest cock" << std::endl;
     if (cell.getAbilities()[i]->getAbilityType() == AbilityType::FireWall) {
       playerNum = cell.getAbilities()[i]->getPlayerNum();
     }
@@ -99,6 +97,7 @@ void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
   int playerNum = activePlayer->getPlayerNumber();
   if (playerNum == 1) {
     if (row > 7 && col >= 0 && col <= 7) {
+      std::cout<< "its reached here" << std::endl; 
       activePlayer->downloadLink(link);
     }
   } else if (playerNum == 2) {
@@ -144,11 +143,7 @@ void Grid::move(size_t row, size_t col, Link *link) {
     Cell cell = theGrid[row][col];
     if (isFirewall(cell)) {
       firewall(cell, activePlayer, link);
-      return;
-    }
-    if(cell.getServerPort()) {
-      serverport(row, link);
-      return;
+      return; 
     }
     if(willBattle(cell)) {
       Link *opponentLink = cell.getLink();
@@ -163,6 +158,7 @@ void Grid::move(size_t row, size_t col, Link *link) {
     theGrid[row][col].setLink(link);
   }
   else {
+    std::cout << "calling moveOffgrid" << std::endl; 
     moveOffGrid(row, col, activePlayer, link);
   }
 }
@@ -229,7 +225,7 @@ void Grid::moveLink(Link *link, Direction dir) {
   else if (dir == Direction::South) {
     if (isLinkBoost(link)) {
       if (row == 7 || row == 6) {
-        if (activePlayer->getPlayerNumber() == 2) {
+        if (activePlayer->getPlayerNumber() == 1) {
           activePlayer->downloadLink(link);
         } else {
           move(row, col, link);
@@ -241,7 +237,7 @@ void Grid::moveLink(Link *link, Direction dir) {
     }
     else {
       if (row == 7) {
-        if (activePlayer->getPlayerNumber() == 2) {
+        if (activePlayer->getPlayerNumber() == 1) {
           activePlayer->downloadLink(link);
         } else {
           move(row, col, link);
