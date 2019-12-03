@@ -45,30 +45,26 @@ void GraphicsDisplay::drawPlayerData(Player *player, Player *activePlayer) {
 }
 
 void GraphicsDisplay::notify(Subject &whoFrom) {
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            Info cellInfo = whoFrom.getInfo();
-            size_t row = (cellInfo.row * 50) + 200;
-            size_t col = cellInfo.col * 50;
-            std::string cellString;
-            if (cellInfo.state == State::Link) {
-                cellString = std::string(1, cellInfo.linkName);
-                window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
-            } else if (cellInfo.state == State::ServerPort) {
-                window->fillRectangle(col + 5, row, 40, 40, Xwindow::Blue);
-                cellString = "S";
-                window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
-            } else if (cellInfo.state == State::PlayerOneFireWall) {
-                window->fillRectangle(col + 5, row, 40, 40, Xwindow::Red);
-                cellString = "M";
-                window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
-            } else if (cellInfo.state == State::PlayerTwoFireWall) {
-                window->fillRectangle(col + 5, row, 40, 40, Xwindow::Red);
-                cellString = "W";
-                window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
-            } else if (cellInfo.state == State::Empty) {
-                window->fillRectangle(col + 5, row, 40, 40, Xwindow::Black);
-            }
-        }
+    Info cellInfo = whoFrom.getInfo();
+    size_t row = (cellInfo.row * 50) + 200;
+    size_t col = cellInfo.col * 50;
+    std::string cellString;
+    if (cellInfo.state == State::Link) {
+        cellString = std::string(1, cellInfo.linkName);
+        window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
+    } else if (cellInfo.state == State::ServerPort) {
+        window->fillRectangle(col + 5, row, 40, 40, Xwindow::Blue);
+        cellString = "S";
+        window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
+    } else if (cellInfo.state == State::PlayerOneFireWall) {
+        window->fillRectangle(col + 5, row, 40, 40, Xwindow::Red);
+        cellString = "M";
+        window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
+    } else if (cellInfo.state == State::PlayerTwoFireWall) {
+        window->fillRectangle(col + 5, row, 40, 40, Xwindow::Red);
+        cellString = "W";
+        window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
+    } else if (cellInfo.state == State::Empty) {
+        window->fillRectangle(col + 5, row, 40, 40, Xwindow::Black);
     }
 }
