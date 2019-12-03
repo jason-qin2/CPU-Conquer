@@ -12,7 +12,7 @@ void Player::downloadLink(Link *link) {
   char name = link->getName();
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
-      if(theGrid.getCell(i,j)->hasLmink()) {
+      if(theGrid.getCell(i,j)->hasLink()) {
         if (theGrid.getCell(i,j)->getLink()->getName() == name) {
           theGrid.getCell(i,j)->removeLink();
         }
