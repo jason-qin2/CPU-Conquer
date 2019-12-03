@@ -221,6 +221,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       if (row == 0 || row == 1) {
         if (activePlayer->getPlayerNumber() == 2) {
           activePlayer->downloadLink(link);
+          return;
         } else {
           move(row, col, link);
           throw InvalidMove();
@@ -236,6 +237,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       if (row == 0) {
         if (activePlayer->getPlayerNumber() == 2) {
           activePlayer->downloadLink(link);
+          return;
         } else {
           move(row, col, link);
           throw InvalidMove();
@@ -277,6 +279,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       if (row == 7 || row == 6) {
         if (activePlayer->getPlayerNumber() == 1) {
           activePlayer->downloadLink(link);
+          return;
         } else {
           move(row, col, link);
           throw InvalidMove();
@@ -292,6 +295,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       if (row == 7) {
         if (activePlayer->getPlayerNumber() == 1) {
           activePlayer->downloadLink(link);
+          return;
         } else {
           move(row, col, link);
           throw InvalidMove();
