@@ -3,6 +3,17 @@
 #include "grid.h"
 #include "exceptions.h"
 
+Grid::~Grid() {
+    for (auto player: players) {
+        delete player;
+    }
+    for (size_t i = 0; i < theGrid.size(); i++) {
+        theGrid[i].clear();
+    }
+    theGrid.clear();
+    delete textDisplay;
+}
+
 bool Grid::isFinished() {
     for (auto &player: players) {
         if (player->getDlDataCount() >= 4) {
@@ -278,8 +289,8 @@ bool hasGraphics) {
     for (size_t i = 0; i < defaultGridSize; i++) {
         std::vector<Cell> cellRow;
         for (size_t j = 0; j < defaultGridSize; j++) {
-            Cell *newCell = new Cell(i, j);
-            cellRow.push_back(*newCell);
+            Cell newCell = Cell(i, j);
+            cellRow.push_back(newCell);
         }
         theGrid.push_back(cellRow);
     }
