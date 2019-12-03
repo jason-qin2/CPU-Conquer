@@ -34,6 +34,8 @@ std::string Ability::getTypeAsStr() {
         return "Polarize";
     } else if (type == AbilityType::Scan) {
         return "Scan";
+    } else if (type == AbilityType::Relocate) {
+        return "Relocate";
     } else if (type == AbilityType::Steal) {
         return "Steal";
     } else if (type == AbilityType::SuperStrength) {

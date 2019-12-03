@@ -106,6 +106,49 @@ void Player::scan(std::vector <Link *> opponentLinks) {
     throw AbilityError();
 }
 
+void Player::relocate(std::vector<Link *> opponentLinks) {
+    char linkID;
+    Link *link = nullptr; 
+    std::cin >> linkID;
+    for(size_t i = 0; i < ownedLinks.size(); i++) {
+        if(ownedLinks[i]->getName() == linkID) {
+            link = ownedLinks[i];
+        }
+    }
+    for(size_t i = 0; i < opponentLinks.size(); i++) {
+        if(opponentLinks[i]->getName() == linkID) {
+            link = opponentLinks[i];
+        }
+    }
+    //if link doesn't exist the throw error, otherwise find it on grid and remove it 
+    if(link == nullptr) {
+        throw AbilityError();
+    } else {
+        theGrid.remove(link);
+    }
+    //Adds link to new location on the grid
+    theGrid.spawnLink(link);
+    return; 
+}
+
+void Player::superStrength(std::vector<Link *> opponentLinks) {
+    char linkID;
+    std::cin >> linkID;
+    for(size_t i = 0; i < ownedLinks.size(); i++) {
+        if(ownedLinks[i]->getName() == linkID) {
+            ownedLinks[i]->changeStrength(100);
+            return;
+        }
+    }
+    for(size_t i = 0; i < opponentLinks.size(); i++) {
+        if(opponentLinks[i]->getName() == linkID) {
+            opponentLinks[i]->changeStrength(100);
+            return;
+        }
+    }
+    throw AbilityError();
+    
+}
 std::vector<Ability*> Player::getAbilities() {
   return abilities;
 }
@@ -156,6 +199,10 @@ void Player::useAbility(int abilityNum){
         polarize(opponentNumber, opponentLinks);
     } else if(currAbility == AbilityType::Scan) {
         scan(opponentLinks);
+    } else if(currAbility == AbilityType::Relocate) {
+        relocate(opponentLinks);
+    } else if(currAbility == AbilityType::SuperStrength) {
+        superStrength(opponentLinks);
     } else if (currAbility == AbilityType::Steal) {
       this->steal();
     }

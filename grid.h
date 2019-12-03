@@ -35,6 +35,8 @@ class Grid {
         Player *getActivePlayer();
         void changeActivePlayer();
         void renderGraphics();
+        void remove(Link *link);
+        void spawnLink(Link *link);
 
         friend std::ostream &operator<<(std::ostream &out, const Grid &g);
 };

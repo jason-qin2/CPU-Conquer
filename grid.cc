@@ -1,5 +1,7 @@
 #include <vector>
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 #include "grid.h"
 #include "exceptions.h"
 
@@ -58,10 +60,8 @@ bool isLinkBoost(Link *link) {
 }
 
 void firewall(Cell cell, Player *activePlayer, Link *link) {
-  std::cout << "biggest cock" << std::endl;
   int playerNum;
   for (size_t i = 0; i < cell.getAbilities().size(); i++) {
-    std::cout << "worlds biggest cock" << std::endl;
     if (cell.getAbilities()[i]->getAbilityType() == AbilityType::FireWall) {
       playerNum = cell.getAbilities()[i]->getPlayerNum();
     }
@@ -99,6 +99,7 @@ void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
   int playerNum = activePlayer->getPlayerNumber();
   if (playerNum == 1) {
     if (row > 7 && col >= 0 && col <= 7) {
+      std::cout<< "its reached here" << std::endl; 
       activePlayer->downloadLink(link);
     }
   } else if (playerNum == 2) {
@@ -138,16 +139,37 @@ void Grid::serverport(size_t row, Link *link) {
   }
 }
 
+void Grid::remove(Link *link) {
+  for (size_t i = 0; i < theGrid.size(); i++) {
+    for (size_t j = 0; j < theGrid.size(); j++) {
+      if (link == theGrid[i][j].getLink()) {
+        theGrid[i][j].removeLink();
+        return; 
+      }
+    }
+  }
+  throw AbilityError();
+}
+
+void Grid::spawnLink(Link *link) {
+    srand(time(NULL)); 
+    while(1) {
+      int randCol = rand() % 8;
+      int randRow = rand() % 8; 
+      if(!theGrid[randRow][randCol].hasLink()) {
+        std::cout <<"it has reached here" << std::endl; 
+        theGrid[randRow][randCol].setLink(link);
+        break;
+        }
+    }
+}
+
 void Grid::move(size_t row, size_t col, Link *link) {
   if (isValidMove(row, col)) {
     Cell cell = theGrid[row][col];
     if (isFirewall(cell)) {
       firewall(cell, activePlayer, link);
-      return;
-    }
-    if(cell.getServerPort()) {
-      serverport(row, link);
-      return;
+      return; 
     }
     if(willBattle(cell)) {
       Link *opponentLink = cell.getLink();
@@ -162,6 +184,7 @@ void Grid::move(size_t row, size_t col, Link *link) {
     theGrid[row][col].setLink(link);
   }
   else {
+    std::cout << "calling moveOffgrid" << std::endl; 
     moveOffGrid(row, col, activePlayer, link);
   }
 }
@@ -316,13 +339,16 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
     } else if (c == 'S') {
       abilitiesArr.push_back(new Ability(AbilityType::Scan, playerNum));
       SCCount++;
+    } else if (c == 'R') {
+      abilitiesArr.push_back(new Ability(AbilityType::Relocate, playerNum));
+      RLCount++; 
     } else if (c == 'T') {
+      abilitiesArr.push_back(new Ability(AbilityType::SuperStrength, playerNum));
+      SSCount++; 
+    } else if (c == 'X') {
       abilitiesArr.push_back(new Ability(AbilityType::Steal, playerNum));
       STCount++;
-    } else if (c == 'X') {
-      abilitiesArr.push_back(new Ability(AbilityType::SuperStrength, playerNum));
-      SSCount++;
-    }
+    } 
   }
   if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || SCCount > 2 || STCount > 2 || SSCount > 2) {
     throw InvalidArguments();

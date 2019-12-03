@@ -3,6 +3,6 @@
 
 enum class Direction { North, West, East, South };
 enum class LinkType { Data, Virus };
-enum class AbilityType { LinkBoost, FireWall, Download, Polarize, Scan, Steal, SuperStrength };
+enum class AbilityType { LinkBoost, FireWall, Download, Polarize, Scan, SuperStrength, Steal, Relocate };
 
 #endif

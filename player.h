@@ -20,6 +20,8 @@ class Player {
         void download(int opponentNumber, std::vector<Link *> opponentLinks, Player *curPlayer);
         void polarize(int opponentNumber, std::vector<Link *> opponentLinks);
         void scan(std::vector <Link *> opponentLinks);
+        void relocate(std::vector<Link *> opponentLinks);
+        void superStrength(std::vector<Link *> opponentLinks);
         void steal();
     public:
         Player(int playerNumber, std::vector<Ability*> abilities,
