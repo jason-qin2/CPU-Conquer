@@ -4,25 +4,25 @@
 #include "exceptions.h"
 
 Grid::~Grid() {
-    for (auto player: players) {
-        delete player;
-    }
-    for (size_t i = 0; i < theGrid.size(); i++) {
-        theGrid[i].clear();
-    }
-    theGrid.clear();
-    delete textDisplay;
+  for (auto player: players) {
+    delete player;
+  }
+  for (size_t i = 0; i < theGrid.size(); i++) {
+    theGrid[i].clear();
+  }
+  theGrid.clear();
+  delete textDisplay;
 }
 
 bool Grid::isFinished() {
-    for (auto &player: players) {
-        if (player->getDlDataCount() >= 4) {
-            return true;
-        } else if (player->getDlVirusCount() >= 4) {
-            return true;
-        }
+  for (auto &player: players) {
+    if (player->getDlDataCount() >= 4) {
+      return true;
+    } else if (player->getDlVirusCount() >= 4) {
+      return true;
     }
-    return false;
+  }
+  return false;
 }
 
 Player *Grid::whoWon() {
@@ -58,10 +58,10 @@ bool isLinkBoost(Link *link) {
 }
 
 void firewall(Cell cell, Player *activePlayer, Link *link) {
-  std::cout << "biggest cock" << std::endl; 
+  std::cout << "biggest cock" << std::endl;
   int playerNum;
   for (size_t i = 0; i < cell.getAbilities().size(); i++) {
-    std::cout << "worlds biggest cock" << std::endl; 
+    std::cout << "worlds biggest cock" << std::endl;
     if (cell.getAbilities()[i]->getAbilityType() == AbilityType::FireWall) {
       playerNum = cell.getAbilities()[i]->getPlayerNum();
     }
@@ -106,58 +106,59 @@ void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
       activePlayer->downloadLink(link);
     }
   }
-    throw InvalidMove();
+  throw InvalidMove();
 }
 
 bool willBattle(Cell cell) {
-    if(cell.hasLink()) {
-        return true;
-    } else {
-        return false;
-    }
+  if(cell.hasLink()) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 Link *battle(Link *ownLink, Link *opponentLink, Player *activePlayer, std::vector<Player*> players) {
-    ownLink->show();
-    opponentLink->show();
-    int opponentID = (activePlayer->getPlayerNumber() == 1) ? 2 : 1;
-    if(ownLink->getStrength() >= opponentLink->getStrength()) {
-        activePlayer->downloadLink(opponentLink);
-        return ownLink;
-    } else {
-        players[opponentID - 1]->downloadLink(ownLink);
-        return opponentLink;
-    }
+  ownLink->show();
+  opponentLink->show();
+  int opponentID = (activePlayer->getPlayerNumber() == 1) ? 2 : 1;
+  if(ownLink->getStrength() >= opponentLink->getStrength()) {
+    activePlayer->downloadLink(opponentLink);
+    return ownLink;
+  } else {
+    players[opponentID - 1]->downloadLink(ownLink);
+    return opponentLink;
+  }
 }
 
 void Grid::serverport(size_t row, Link *link) {
-    if(row == 0) {
-        players[0]->downloadLink(link);
-    } else {
-        players[1]->downloadLink(link);
-    }
+  if(row == 0) {
+    players[0]->downloadLink(link);
+  } else {
+    players[1]->downloadLink(link);
+  }
 }
 
+//return a bool: true if moved, false if not moved
 void Grid::move(size_t row, size_t col, Link *link) {
   if (isValidMove(row, col)) {
     Cell cell = theGrid[row][col];
     if (isFirewall(cell)) {
       firewall(cell, activePlayer, link);
-      return; 
+      return;
     }
     if(cell.getServerPort()) {
-        serverport(row, link);
-        return;
+      serverport(row, link);
+      return;
     }
     if(willBattle(cell)) {
-        Link *opponentLink = cell.getLink();
-        if (battle(link, opponentLink, activePlayer, players)->getName() == link->getName()) {
-          theGrid[row][col].setLink(link);
-          return;
-        } else {
-          theGrid[row][col].setLink(opponentLink);
-          return;
-        }
+      Link *opponentLink = cell.getLink();
+      if (battle(link, opponentLink, activePlayer, players)->getName() == link->getName()) {
+        theGrid[row][col].setLink(link);
+        return;
+      } else {
+        theGrid[row][col].setLink(opponentLink);
+        return;
+      }
     }
     theGrid[row][col].setLink(link);
   }
@@ -210,24 +211,16 @@ void Grid::moveLink(Link *link, Direction dir) {
   else if (dir == Direction::East) {
     if (isLinkBoost(link)) {
       if (col == 7 || col == 6) {
-        if (activePlayer->getPlayerNumber() == 2) {
-          activePlayer->downloadLink(link);
-        } else {
-          move(row, col, link);
-          throw InvalidMove();
-        }
+        move(row, col, link);
+        throw InvalidMove();
       } else {
         move(row, col + 2, link);
       }
     }
     else {
       if (col == 7) {
-        if (activePlayer->getPlayerNumber() == 2) {
-          activePlayer->downloadLink(link);
-        } else {
-          move(row, col, link);
-          throw InvalidMove();
-        }
+        move(row, col, link);
+        throw InvalidMove();
       } else {
         move(row, col + 1, link);
       }
@@ -262,24 +255,16 @@ void Grid::moveLink(Link *link, Direction dir) {
   else if (dir == Direction::West) {
     if (isLinkBoost(link)) {
       if (col == 0 || col == 1) {
-        if (activePlayer->getPlayerNumber() == 2) {
-          activePlayer->downloadLink(link);
-        } else {
-          move(row, col, link);
-          throw InvalidMove();
-        }
+        move(row, col, link);
+        throw InvalidMove();
       } else {
         move(row, col - 2, link);
       }
     }
     else {
       if (col == 0) {
-        if (activePlayer->getPlayerNumber() == 2) {
-          activePlayer->downloadLink(link);
-        } else {
-          move(row, col, link);
-          throw InvalidMove();
-        }
+        move(row, col, link);
+        throw InvalidMove();
       } else {
         move(row, col - 1, link);
       }
@@ -289,72 +274,72 @@ void Grid::moveLink(Link *link, Direction dir) {
 } // moves a link a certain direction
 
 std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNum) {
-    std::vector<Ability*> abilitiesArr;
-    int LBCount = 0, FWCount = 0, DLCount = 0;
-    int PLCount = 0, SCCount = 0;
-    for (char const &c: abilitiesStr) {
-        if (c == 'L') {
-            abilitiesArr.push_back(new Ability(AbilityType::LinkBoost, playerNum));
-            LBCount++;
-        } else if (c == 'F') {
-            abilitiesArr.push_back(new Ability(AbilityType::FireWall, playerNum));
-            FWCount++;
-        } else if (c == 'D') {
-            abilitiesArr.push_back(new Ability(AbilityType::Download, playerNum));
-            DLCount++;
-        } else if (c == 'P') {
-            abilitiesArr.push_back(new Ability(AbilityType::Polarize, playerNum));
-            PLCount++;
-        } else if (c == 'S') {
-            abilitiesArr.push_back(new Ability(AbilityType::Scan, playerNum));
-            SCCount++;
-        }
+  std::vector<Ability*> abilitiesArr;
+  int LBCount = 0, FWCount = 0, DLCount = 0;
+  int PLCount = 0, SCCount = 0;
+  for (char const &c: abilitiesStr) {
+    if (c == 'L') {
+      abilitiesArr.push_back(new Ability(AbilityType::LinkBoost, playerNum));
+      LBCount++;
+    } else if (c == 'F') {
+      abilitiesArr.push_back(new Ability(AbilityType::FireWall, playerNum));
+      FWCount++;
+    } else if (c == 'D') {
+      abilitiesArr.push_back(new Ability(AbilityType::Download, playerNum));
+      DLCount++;
+    } else if (c == 'P') {
+      abilitiesArr.push_back(new Ability(AbilityType::Polarize, playerNum));
+      PLCount++;
+    } else if (c == 'S') {
+      abilitiesArr.push_back(new Ability(AbilityType::Scan, playerNum));
+      SCCount++;
     }
-    if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || SCCount > 2) {
-        throw InvalidArguments();
-    }
-    return abilitiesArr;
+  }
+  if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || SCCount > 2) {
+    throw InvalidArguments();
+  }
+  return abilitiesArr;
 }
 
 std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
-    std::vector<Link*> linksArr;
-    std::string linkNames;
-    if (linksStr.size() != 16) {
-        throw InvalidArguments();
+  std::vector<Link*> linksArr;
+  std::string linkNames;
+  if (linksStr.size() != 16) {
+    throw InvalidArguments();
+  }
+  if (playerNum == 1) {
+    linkNames = "abcdefgh";
+  } else if (playerNum == 2) {
+    linkNames = "ABCDEFGH";
+  }
+  for (size_t i = 0; i < linksStr.size(); i++) {
+    LinkType linkType;
+    if (linksStr[i] == 'V') {
+      linkType = LinkType::Virus;
+    } else if (linksStr[i] == 'D') {
+      linkType = LinkType::Data;
+    } else {
+      throw InvalidArguments();
     }
-    if (playerNum == 1) {
-        linkNames = "abcdefgh";
-    } else if (playerNum == 2) {
-        linkNames = "ABCDEFGH";
+    int linkStrength = linksStr[i + 1] - '0';
+    if (linkStrength > 4 || linkStrength < 1) {
+      throw InvalidArguments();
     }
-    for (size_t i = 0; i < linksStr.size(); i++) {
-        LinkType linkType;
-        if (linksStr[i] == 'V') {
-            linkType = LinkType::Virus;
-        } else if (linksStr[i] == 'D') {
-            linkType = LinkType::Data;
-        } else {
-            throw InvalidArguments();
-        }
-        int linkStrength = linksStr[i + 1] - '0';
-        if (linkStrength > 4 || linkStrength < 1) {
-            throw InvalidArguments();
-        }
-        linksArr.push_back(new Link(linkStrength, linkType, linkNames[0], playerNum));
-        linkNames.erase(0, 1);
-        i = i + 1;
-    }
-    return linksArr;
+    linksArr.push_back(new Link(linkStrength, linkType, linkNames[0], playerNum));
+    linkNames.erase(0, 1);
+    i = i + 1;
+  }
+  return linksArr;
 }
 
 void Grid::init(std::string pOneAbil, std::string pTwoAbil,
-std::string pOneLinks, std::string pTwoLinks,
-bool hasGraphics) {
+  std::string pOneLinks, std::string pTwoLinks,
+  bool hasGraphics) {
     if (hasGraphics) {
-        // initialize Graphics
+      // initialize Graphics
     } else {
-        textDisplay = new TextDisplay();
-        attach(textDisplay);
+      textDisplay = new TextDisplay();
+      attach(textDisplay);
     }
 
     std::vector<Ability*> playerOneAbilities = initAbilities(pOneAbil, 1);
@@ -368,26 +353,26 @@ bool hasGraphics) {
     activePlayer = playerOne;
     const int defaultGridSize = 8;
     for (size_t i = 0; i < defaultGridSize; i++) {
-        std::vector<Cell> cellRow;
-        for (size_t j = 0; j < defaultGridSize; j++) {
-            Cell newCell = Cell(i, j);
-            cellRow.push_back(newCell);
-        }
-        theGrid.push_back(cellRow);
+      std::vector<Cell> cellRow;
+      for (size_t j = 0; j < defaultGridSize; j++) {
+        Cell newCell = Cell(i, j);
+        cellRow.push_back(newCell);
+      }
+      theGrid.push_back(cellRow);
     }
     for (int i = 0; i < defaultGridSize; i++) {
-        if ((i == 3) | (i == 4)) {
-            theGrid[1][i].setLink(playerOneLinks[i]);
-            theGrid[6][i].setLink(playerTwoLinks[i]);
-        } else {
-            theGrid[0][i].setLink(playerOneLinks[i]);
-            theGrid[7][i].setLink(playerTwoLinks[i]);
-        }
+      if ((i == 3) | (i == 4)) {
+        theGrid[1][i].setLink(playerOneLinks[i]);
+        theGrid[6][i].setLink(playerTwoLinks[i]);
+      } else {
+        theGrid[0][i].setLink(playerOneLinks[i]);
+        theGrid[7][i].setLink(playerTwoLinks[i]);
+      }
     }
     notifyObservers();
-}
+  }
 
-void Grid::printPlayer(std::ostream &out, Player *player) const {
+  void Grid::printPlayer(std::ostream &out, Player *player) const {
     using namespace std;
     out << "Player " << player->getPlayerNumber() << ':' << endl;
     out << "Downloaded: " << player->getDlDataCount() << "D, ";
@@ -395,56 +380,56 @@ void Grid::printPlayer(std::ostream &out, Player *player) const {
     out << "Abilities: " << player->getAbilityCount() << endl;
     std::vector<Link*> links = player->getOwnedLinks();
     for (size_t i = 0; i < links.size(); i++) {
-        out << links[i]->getName() << ": ";
-        if (links[i]->isHidden() && player != activePlayer) {
-            out << '?';
-        } else {
-            if (links[i]->getLinkType() == LinkType::Virus) {
-                out << 'V';
-            } else if (links[i]->getLinkType() == LinkType::Data) {
-                out << 'D';
-            }
-            out << links[i]->getStrength();
+      out << links[i]->getName() << ": ";
+      if (links[i]->isHidden() && player != activePlayer) {
+        out << '?';
+      } else {
+        if (links[i]->getLinkType() == LinkType::Virus) {
+          out << 'V';
+        } else if (links[i]->getLinkType() == LinkType::Data) {
+          out << 'D';
         }
-        if (i == 3 || i == 7) {
-            out << endl;
-        } else {
-            out << ' ';
-        }
+        out << links[i]->getStrength();
+      }
+      if (i == 3 || i == 7) {
+        out << endl;
+      } else {
+        out << ' ';
+      }
     }
-}
+  }
 
-Cell *Grid::getCell(int row, int col) {
+  Cell *Grid::getCell(int row, int col) {
     return &theGrid[row][col];
-}
+  }
 
-Player *Grid::getPlayer(int playerNum) {
+  Player *Grid::getPlayer(int playerNum) {
     for (auto player: players) {
-        if (player->getPlayerNumber() == playerNum) {
-            return player;
-        }
+      if (player->getPlayerNumber() == playerNum) {
+        return player;
+      }
     }
     throw AbilityError();
-}
+  }
 
-Info Grid::getInfo() {
+  Info Grid::getInfo() {
     return Info{theGrid};
-}
+  }
 
-Player *Grid::getActivePlayer() {
+  Player *Grid::getActivePlayer() {
     return activePlayer;
-}
+  }
 
-void Grid::changeActivePlayer() {
+  void Grid::changeActivePlayer() {
     for (auto player: players) {
-        if (player->getPlayerNumber() != activePlayer->getPlayerNumber()) {
-            activePlayer = player;
-            return;
-        }
+      if (player->getPlayerNumber() != activePlayer->getPlayerNumber()) {
+        activePlayer = player;
+        return;
+      }
     }
-}
+  }
 
-std::ostream &operator<<(std::ostream &out, const Grid &g) {
+  std::ostream &operator<<(std::ostream &out, const Grid &g) {
     Player *playerOne = g.players[0];
     Player *playerTwo = g.players[1];
     g.printPlayer(out, playerOne);
@@ -453,4 +438,4 @@ std::ostream &operator<<(std::ostream &out, const Grid &g) {
     out << "========" << std::endl;
     g.printPlayer(out, playerTwo);
     return out;
-}
+  }

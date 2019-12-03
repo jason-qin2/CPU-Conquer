@@ -91,10 +91,16 @@ int main(int argc, char *argv[]) {
             std::cout << "This is not a valid move, please enter a valid move." << std::endl;
             continue;
           }
+          bool canMove = false;
           for (size_t i = 0; i < g.getActivePlayer()->getOwnedLinks().size(); i++) {
             if (g.getActivePlayer()->getOwnedLinks()[i]->getName() == name) {
               link = g.getActivePlayer()->getOwnedLinks()[i];
+              canMove = true;
             }
+          }
+          if (!canMove) {
+            std::cout<< "This is not your link. Try moving one of your own links" << std::endl;
+            continue;
           }
           if (link->isDownloaded()) {
             std::cout << "This link has already been downloaded. Try moving another link." << std::endl;
@@ -106,7 +112,7 @@ int main(int argc, char *argv[]) {
               g.changeActivePlayer();
               std::cout << g;
               link = nullptr;
-              useAbility = false; 
+              usedAbility = false;
           } catch (InvalidMove) {
               std::cout << "This is not a valid move, please enter a valid move." << std::endl;
           }
