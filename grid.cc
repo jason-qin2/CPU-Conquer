@@ -364,10 +364,10 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
     }
   }
   if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 ||
-    SCCount > 2 || STCount > 2 || SSCount > 2) {
+    SCCount > 2 || STCount > 2 || SSCount > 2 || RLCount > 2) {
     throw InvalidArguments();
   }
-  if ((LBCount + FWCount + DLCount + PLCount + SCCount + STCount + SSCount) > 5) {
+  if ((LBCount + FWCount + DLCount + PLCount + SCCount + STCount + SSCount + RLCount) > 5) {
     throw InvalidArguments();
   }
   return abilitiesArr;
