@@ -52,6 +52,8 @@ void Player::fireWall(Ability *ability) {
     }
     if(targetCell->getServerPort()) {
         throw AbilityError();
+    } else if(targetCell->hasLink()) {
+        throw AbilityError();
     } else {
         targetCell->addAbility(ability);
         return;
