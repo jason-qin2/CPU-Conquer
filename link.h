@@ -27,6 +27,7 @@ class Link {
         std::vector<Ability*> getAbilities();
         bool isDownloaded();
         void download();
+        void changeStrength(int newStrength);
 };
 
 #endif

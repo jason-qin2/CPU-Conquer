@@ -1,5 +1,7 @@
 #include <vector>
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 #include "grid.h"
 #include "exceptions.h"
 
@@ -135,6 +137,31 @@ void Grid::serverport(size_t row, Link *link) {
   } else {
     players[1]->downloadLink(link);
   }
+}
+
+void Grid::remove(Link *link) {
+  for (size_t i = 0; i < theGrid.size(); i++) {
+    for (size_t j = 0; j < theGrid.size(); j++) {
+      if (link == theGrid[i][j].getLink()) {
+        theGrid[i][j].removeLink();
+        return; 
+      }
+    }
+  }
+  throw AbilityError();
+}
+
+void Grid::spawnLink(Link *link) {
+    srand(time(NULL)); 
+    while(1) {
+      int randCol = rand() % 8;
+      int randRow = rand() % 8; 
+      if(!theGrid[randRow][randCol].hasLink()) {
+        std::cout <<"it has reached here" << std::endl; 
+        theGrid[randRow][randCol].setLink(link);
+        break;
+        }
+    }
 }
 
 void Grid::move(size_t row, size_t col, Link *link) {
@@ -296,7 +323,7 @@ void Grid::moveLink(Link *link, Direction dir) {
 std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNum) {
   std::vector<Ability*> abilitiesArr;
   int LBCount = 0, FWCount = 0, DLCount = 0;
-  int PLCount = 0, SCCount = 0;
+  int PLCount = 0, SCCount = 0, RLCount = 0, SSCount = 0; 
   for (char const &c: abilitiesStr) {
     if (c == 'L') {
       abilitiesArr.push_back(new Ability(AbilityType::LinkBoost, playerNum));
@@ -313,6 +340,12 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
     } else if (c == 'S') {
       abilitiesArr.push_back(new Ability(AbilityType::Scan, playerNum));
       SCCount++;
+    } else if (c == 'R') {
+      abilitiesArr.push_back(new Ability(AbilityType::Relocate, playerNum));
+      RLCount++; 
+    } else if (c == 'T') {
+      abilitiesArr.push_back(new Ability(AbilityType::SuperStrength, playerNum));
+      SSCount++; 
     }
   }
   if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || SCCount > 2) {

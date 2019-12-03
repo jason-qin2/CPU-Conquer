@@ -1,7 +1,6 @@
 #ifndef _PLAYER_H
 #define _PLAYER_H
 #include <vector>
-#include <cstdlib>
 #include "link.h"
 #include "enums.h"
 #include "cell.h"
@@ -21,7 +20,8 @@ class Player {
         void download(int opponentNumber, std::vector<Link *> opponentLinks, Player *curPlayer);
         void polarize(int opponentNumber, std::vector<Link *> opponentLinks);
         void scan(std::vector <Link *> opponentLinks);
-        void relocate(int opponentNumber, std::vector<Link *> opponentLinks);
+        void relocate(std::vector<Link *> opponentLinks);
+        void superStrength(std::vector<Link *> opponentLinks);
     public:
         Player(int playerNumber, std::vector<Ability*> abilities,
             std::vector<Link*> links, Grid &theGrid);

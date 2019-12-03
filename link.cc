@@ -52,6 +52,10 @@ bool Link::isDownloaded() {
   return downloaded;
 }
 
+void Link::changeStrength(int newStrength) {
+  strength = newStrength;
+}
+
 void Link::download() {
   downloaded = true;
 }
