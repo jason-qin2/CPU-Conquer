@@ -79,24 +79,19 @@ void firewall(Cell cell, Player *activePlayer) {
 bool Grid::isValidMove(size_t row, size_t col) {
   int playerNum = activePlayer->getPlayerNumber();
   Cell newCell = theGrid[row][col];
-  if (row < 8 && col < 8) {
-    return true;
-  } else if (newCell.hasLink()) {
-    if (newCell.getLink()->getPlayerNum() == playerNum) {
-      return false;
-    } else {
-        return true;
-    }
-  } else if (newCell.getServerPort()) {
-      if(row == 0 && playerNum == 1) {
-          return false;
-      } else if(row == 7 && playerNum == 2) {
-          return false;
-      } else {
-          return true;
-      }
-  }
-  return false;
+  if(newCell.hasLink() && newCell.getLink()->getPlayerNum() == playerNum) {
+    return false; 
+  } else if( row < 0 || col < 0 || row > 7 || col > 7) {
+    return false; 
+  } else if(newCell.getServerPort()) {
+    if(row == 0 && playerNum == 1) {
+      return false; 
+    } else if(row == 7 && playerNum == 2) {
+      return false; 
+    } 
+  } 
+
+  return true; 
 }
 
 void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
@@ -111,6 +106,7 @@ void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
       activePlayer->downloadLink(link);
     }
   }
+  throw InvalidMove();
 }
 
 bool willBattle(Cell cell) {
