@@ -109,7 +109,7 @@ void Player::scan(std::vector <Link *> opponentLinks) {
 }
 
 void Player::useAbility(int abilityNum){
-    if (abilityNum < 1) {
+    if (abilityNum < 1 || abilityNum > 5) {
         throw AbilityError();
     }
     Ability *ability = abilities[abilityNum - 1];

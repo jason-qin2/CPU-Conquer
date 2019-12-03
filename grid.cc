@@ -57,22 +57,23 @@ bool isLinkBoost(Link *link) {
   return false;
 }
 
-void firewall(Cell cell, Player *activePlayer) {
-  Link *link = cell.getLink();
+void firewall(Cell cell, Player *activePlayer, Link *link) {
+  std::cout << "biggest cock" << std::endl; 
   int playerNum;
   for (size_t i = 0; i < cell.getAbilities().size(); i++) {
-    if (cell.getLink()->getAbilities()[i]->getAbilityType() == AbilityType::FireWall) {
+    std::cout << "worlds biggest cock" << std::endl; 
+    if (cell.getAbilities()[i]->getAbilityType() == AbilityType::FireWall) {
       playerNum = cell.getAbilities()[i]->getPlayerNum();
     }
   }
   if (activePlayer->getPlayerNumber() == playerNum) {
-    return;
-  }
-  else {
+    cell.setLink(link);
+  } else if(link->getLinkType() == LinkType::Virus) {
     link->show();
-    if (link->getLinkType() == LinkType::Virus) {
-      activePlayer->downloadLink(link);
-    }
+    activePlayer->downloadLink(link);
+  } else {
+    link->show();
+    cell.setLink(link);
   }
 }
 
@@ -139,10 +140,10 @@ void Grid::serverport(size_t row, Link *link) {
 
 void Grid::move(size_t row, size_t col, Link *link) {
   if (isValidMove(row, col)) {
-      Cell cell = theGrid[row][col];
+    Cell cell = theGrid[row][col];
     if (isFirewall(cell)) {
-      firewall(cell, activePlayer);
-      return;
+      firewall(cell, activePlayer, link);
+      return; 
     }
     if(cell.getServerPort()) {
         serverport(row, link);
