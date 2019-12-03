@@ -92,11 +92,11 @@ int main(int argc, char *argv[]) {
             }
           }
           try {
-            g.moveLink(link, dir);
-            g.changeActivePlayer();
-            std::cout << g;
-          } catch (...) {
-              std::cout << "Invalid Move";
+              g.moveLink(link, dir);
+              g.changeActivePlayer();
+              std::cout << g;
+          } catch (InvalidMove) {
+              std::cout << "This is not a valid move, please enter a valid move." << std::endl; 
           }
         }
     }
