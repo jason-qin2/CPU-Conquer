@@ -168,7 +168,7 @@ void Grid::move(size_t row, size_t col, Link *link) {
     if (isFirewall(cell)) {
       firewall(theGrid[row][col], activePlayer, link);
       bool downloaded = false;
-      for (int i = 0; i < activePlayer->getDownloadedLinks().size(); i++) {
+      for (int i = 0; unsigned(i) < activePlayer->getDownloadedLinks().size(); i++) {
         if (activePlayer->getDownloadedLinks()[i] == link) {
           downloaded = true;
         }

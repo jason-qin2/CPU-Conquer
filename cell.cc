@@ -69,7 +69,7 @@ int Cell::getFirewallOwner() {
 }
 
 Info Cell::getInfo() {
-    char linkName;
+    char linkName = ' ';
     State state;
     if (hasLink()) {
       linkName = getLink()->getName();
