@@ -4,18 +4,18 @@ Ability::Ability(AbilityType type, int playerNum) :
     type{type}, playerNum{playerNum} {}
 
 void Ability::useAbility() {
-    isUsed = true; 
+    isUsed = true;
 }
 
 AbilityType Ability::getAbilityType() {
-    return type; 
+    return type;
 }
 
 bool Ability::getUsed() {
     if(isUsed == false) {
-        return false; 
+        return false;
     } else {
-        return true; 
+        return true;
     }
 }
 
@@ -34,6 +34,11 @@ std::string Ability::getTypeAsStr() {
         return "Polarize";
     } else if (type == AbilityType::Scan) {
         return "Scan";
+    } else if (type == AbilityType::Steal) {
+        return "Steal";
+    } else if (type == AbilityType::SuperStrength) {
+        return "SuperStrength";
     }
+
     return "";
 }

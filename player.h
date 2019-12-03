@@ -20,6 +20,7 @@ class Player {
         void download(int opponentNumber, std::vector<Link *> opponentLinks, Player *curPlayer);
         void polarize(int opponentNumber, std::vector<Link *> opponentLinks);
         void scan(std::vector <Link *> opponentLinks);
+        void steal();
     public:
         Player(int playerNumber, std::vector<Ability*> abilities,
             std::vector<Link*> links, Grid &theGrid);
@@ -32,6 +33,7 @@ class Player {
         std::vector<Link*> &getOwnedLinks();
         void printAbilities(std::ostream &out);
         std::vector<Link*> &getDownloadedLinks();
+        std::vector<Ability*> getAbilities();
         ~Player();
 };
 
