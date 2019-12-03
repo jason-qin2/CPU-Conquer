@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
         }
         if (g.isFinished()) {
             int winnerNum = g.whoWon()->getPlayerNumber();
-            std::cout << "Player " << winnerNum << " Won!";
+            std::cout << "Player " << winnerNum << " Won!" << endl;
             return 0;
         }
     }
