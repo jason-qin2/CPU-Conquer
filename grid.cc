@@ -298,7 +298,8 @@ void Grid::moveLink(Link *link, Direction dir) {
 std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNum) {
   std::vector<Ability*> abilitiesArr;
   int LBCount = 0, FWCount = 0, DLCount = 0;
-  int PLCount = 0, SCCount = 0;
+  int PLCount = 0, SCCount = 0, STCount = 0;
+  int SSCount = 0;
   for (char const &c: abilitiesStr) {
     if (c == 'L') {
       abilitiesArr.push_back(new Ability(AbilityType::LinkBoost, playerNum));
@@ -315,9 +316,15 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
     } else if (c == 'S') {
       abilitiesArr.push_back(new Ability(AbilityType::Scan, playerNum));
       SCCount++;
+    } else if (c == 'T') {
+      abilitiesArr.push_back(new Ability(AbilityType::Steal, playerNum));
+      STCount++;
+    } else if (c == 'X') {
+      abilitiesArr.push_back(new Ability(AbilityType::SuperStrength, playerNum));
+      SSCount++;
     }
   }
-  if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || SCCount > 2) {
+  if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || SCCount > 2 || STCount > 2 || SSCount > 2) {
     throw InvalidArguments();
   }
   return abilitiesArr;
