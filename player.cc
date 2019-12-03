@@ -26,7 +26,7 @@ void Player::downloadLink(Link *link) {
 void Player::linkBoost(Ability *ability) {
     char target;
     std::cin >> target;
-    for(int i = 0; i < ownedLinks.size(); i++) {
+    for(size_t i = 0; i < ownedLinks.size(); i++) {
         if(ownedLinks[i]->getName() == target) {
             ownedLinks[i]->addAbility(ability);
             return;
@@ -57,7 +57,7 @@ void Player::fireWall(Ability *ability) {
 void Player::download(int opponentNumber, std::vector<Link *> opponentLinks, Player *curPlayer) {
     char linkID;
     std::cin >> linkID;
-    for (int i = 0; i < opponentLinks.size(); i++) {
+    for (size_t i = 0; i < opponentLinks.size(); i++) {
         if (opponentLinks[i]->getName() == linkID) {
             curPlayer->downloadLink(opponentLinks[i]);
             theGrid.notifyObservers();
@@ -70,14 +70,14 @@ void Player::download(int opponentNumber, std::vector<Link *> opponentLinks, Pla
 void Player::polarize(int opponentNumber, std::vector<Link *> opponentLinks) {
     char linkID;
     std::cin >> linkID;
-    for (int i = 0; i < ownedLinks.size(); i++) {
+    for (size_t i = 0; i < ownedLinks.size(); i++) {
         if (ownedLinks[i]->getName() == linkID) {
             ownedLinks[i]->changeType();
             theGrid.notifyObservers();
             return;
         }
     }
-    for (int i = 0; i < opponentLinks.size(); i++) {
+    for (size_t i = 0; i < opponentLinks.size(); i++) {
         if (opponentLinks[i]->getName() == linkID) {
             opponentLinks[i]->changeType();
             theGrid.notifyObservers();
@@ -90,14 +90,14 @@ void Player::polarize(int opponentNumber, std::vector<Link *> opponentLinks) {
 void Player::scan(std::vector <Link *> opponentLinks) {
     char linkID;
     std::cin >> linkID;
-    for(int i = 0; i < ownedLinks.size(); i++) {
+    for(size_t i = 0; i < ownedLinks.size(); i++) {
         if(ownedLinks[i]->getName() == linkID) {
             ownedLinks[i]->show();
             theGrid.notifyObservers();
             return;
         }
     }
-    for(int i = 0; i < opponentLinks.size(); i++) {
+    for(size_t i = 0; i < opponentLinks.size(); i++) {
         if(opponentLinks[i]->getName() == linkID) {
             opponentLinks[i]->show();
             theGrid.notifyObservers();
@@ -137,7 +137,7 @@ void Player::useAbility(int abilityNum){
 
 int Player::getDlVirusCount() {
     int virusCount = 0;
-    for (int i = 0; i < downloadedLinks.size(); i++) {
+    for (size_t i = 0; i < downloadedLinks.size(); i++) {
         if (downloadedLinks[i]->getLinkType() == LinkType::Virus) {
             virusCount++;
         }
@@ -147,7 +147,7 @@ int Player::getDlVirusCount() {
 
 int Player::getDlDataCount() {
     int dataCount = 0;
-    for (int i = 0; i < downloadedLinks.size(); i++) {
+    for (size_t i = 0; i < downloadedLinks.size(); i++) {
         if (downloadedLinks[i]->getLinkType() == LinkType::Data) {
             dataCount++;
         }
@@ -157,7 +157,7 @@ int Player::getDlDataCount() {
 
 int Player::getAbilityCount() {
     int abilityCount = 0;
-    for (int i = 0; i < abilities.size(); i++) {
+    for (size_t i = 0; i < abilities.size(); i++) {
         if(!abilities[i]->getUsed()) {
             abilityCount++;
         }
@@ -174,7 +174,7 @@ std::vector<Link *> &Player::getOwnedLinks() {
 }
 
 void Player::printAbilities(std::ostream &out) {
-    for (int i = 0; i < abilities.size(); i++) {
+    for (size_t i = 0; i < abilities.size(); i++) {
         out << "Ability #" << i + 1 << ": ";
         out << abilities[i]->getTypeAsStr() << " ";
         out << "Used: ";

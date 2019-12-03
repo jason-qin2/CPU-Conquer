@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <string.h>
 #include "grid.h"
 #include "exceptions.h"
 using namespace std;
@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
           } else if (d == "left") {
             dir = Direction::West;
           }
-          for (int i = 0; i < g.getActivePlayer()->getOwnedLinks().size(); i++) {
+          for (size_t i = 0; i < g.getActivePlayer()->getOwnedLinks().size(); i++) {
             if (g.getActivePlayer()->getOwnedLinks()[i]->getName() == name) {
               link = g.getActivePlayer()->getOwnedLinks()[i];
             }

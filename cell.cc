@@ -26,7 +26,7 @@ Link *Cell::getLink() {
 } //returns link on the cell
 
 bool Cell::hasAbilities() {
-  for(int i = 0; i < abilities.size(); i++) {
+  for(size_t i = 0; i < abilities.size(); i++) {
     if (abilities[i]) {
       return true;
     }

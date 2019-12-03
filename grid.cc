@@ -29,7 +29,7 @@ Player *Grid::whoWon() {
 
 
 bool isFirewall(Cell cell) {
-  for (int i = 0; i < cell.getAbilities().size(); i++) {
+  for (size_t i = 0; i < cell.getAbilities().size(); i++) {
     if (cell.getAbilities()[i]->getAbilityType() == AbilityType::FireWall) {
       return true;
     }
@@ -38,7 +38,7 @@ bool isFirewall(Cell cell) {
 }
 
 bool isLinkBoost(Link *link) {
-  for (int i = 0; i < link->getAbilities().size(); i++) {
+  for (size_t i = 0; i < link->getAbilities().size(); i++) {
     if (link->getAbilities()[i]->getAbilityType() == AbilityType::LinkBoost) {
       return true;
     }
@@ -49,7 +49,7 @@ bool isLinkBoost(Link *link) {
 void firewall(Cell cell, Player *activePlayer) {
   Link *link = cell.getLink();
   int playerNum;
-  for (int i = 0; i < cell.getAbilities().size(); i++) {
+  for (size_t i = 0; i < cell.getAbilities().size(); i++) {
     if (cell.getLink()->getAbilities()[i]->getAbilityType() == AbilityType::FireWall) {
       playerNum = cell.getAbilities()[i]->getPlayerNum();
     }
@@ -152,8 +152,8 @@ void Grid::move(size_t row, size_t col, Link *link) {
 void Grid::moveLink(Link *link, Direction dir) {
   size_t row;
   size_t col;
-  for (int i = 0; i < theGrid.size(); i++) {
-    for (int j = 0; j < theGrid.size(); j++) {
+  for (size_t i = 0; i < theGrid.size(); i++) {
+    for (size_t j = 0; j < theGrid.size(); j++) {
       if (link == theGrid[i][j].getLink()) {
         row = i;
         col = j;
@@ -235,7 +235,7 @@ std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
     } else if (playerNum == 2) {
         linkNames = "ABCDEFGH";
     }
-    for (int i = 0; i < linksStr.size(); i++) {
+    for (size_t i = 0; i < linksStr.size(); i++) {
         LinkType linkType;
         if (linksStr[i] == 'V') {
             linkType = LinkType::Virus;
@@ -284,7 +284,7 @@ bool hasGraphics) {
         theGrid.push_back(cellRow);
     }
     for (int i = 0; i < defaultGridSize; i++) {
-        if (i == 3 | i == 4) {
+        if ((i == 3) | (i == 4)) {
             theGrid[1][i].setLink(playerOneLinks[i]);
             theGrid[6][i].setLink(playerTwoLinks[i]);
         } else {
@@ -302,7 +302,7 @@ void Grid::printPlayer(std::ostream &out, Player *player) const {
     out << player->getDlVirusCount() << 'V' << endl;
     out << "Abilities: " << player->getAbilityCount() << endl;
     std::vector<Link*> links = player->getOwnedLinks();
-    for (int i = 0; i < links.size(); i++) {
+    for (size_t i = 0; i < links.size(); i++) {
         out << links[i]->getName() << ": ";
         if (links[i]->isHidden() && player != activePlayer) {
             out << '?';

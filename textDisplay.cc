@@ -22,7 +22,7 @@ TextDisplay::TextDisplay() {
 
 int getFirewallOwner(Cell cell) {
   std::vector<Ability*> abilities = cell.getAbilities();
-  for (int i = 0; i < abilities.size(); i++) {
+  for (size_t i = 0; i < abilities.size(); i++) {
     if (abilities[i]->getAbilityType() == AbilityType::FireWall) {
       if (abilities[i]->getPlayerNum() == 1) {
         return 1;
