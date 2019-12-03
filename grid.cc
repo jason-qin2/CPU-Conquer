@@ -138,7 +138,6 @@ void Grid::serverport(size_t row, Link *link) {
   }
 }
 
-//return a bool: true if moved, false if not moved
 void Grid::move(size_t row, size_t col, Link *link) {
   if (isValidMove(row, col)) {
     Cell cell = theGrid[row][col];
@@ -178,7 +177,7 @@ void Grid::moveLink(Link *link, Direction dir) {
       if (link == theGrid[i][j].getLink()) {
         row = i;
         col = j;
-        theGrid[i][j].removeLink();
+
       }
     }
   }
@@ -194,6 +193,9 @@ void Grid::moveLink(Link *link, Direction dir) {
       } else {
         move(row - 2, col, link);
       }
+      if (theGrid[row-2][col].hasLink()) {
+        theGrid[row][col].removeLink();
+      }
     }
     else {
       if (row == 0) {
@@ -206,6 +208,9 @@ void Grid::moveLink(Link *link, Direction dir) {
       } else {
         move(row - 1, col, link);
       }
+      if (theGrid[row-1][col].hasLink()) {
+        theGrid[row][col].removeLink();
+      }
     }
   }
   else if (dir == Direction::East) {
@@ -216,6 +221,9 @@ void Grid::moveLink(Link *link, Direction dir) {
       } else {
         move(row, col + 2, link);
       }
+      if (theGrid[row][col+2].hasLink()) {
+        theGrid[row][col].removeLink();
+      }
     }
     else {
       if (col == 7) {
@@ -224,12 +232,15 @@ void Grid::moveLink(Link *link, Direction dir) {
       } else {
         move(row, col + 1, link);
       }
+      if (theGrid[row][col+1].hasLink()) {
+        theGrid[row][col].removeLink();
+      }
     }
   }
   else if (dir == Direction::South) {
     if (isLinkBoost(link)) {
       if (row == 7 || row == 6) {
-        if (activePlayer->getPlayerNumber() == 2) {
+        if (activePlayer->getPlayerNumber() == 1) {
           activePlayer->downloadLink(link);
         } else {
           move(row, col, link);
@@ -238,10 +249,13 @@ void Grid::moveLink(Link *link, Direction dir) {
       } else {
         move(row + 2, col, link);
       }
+      if (theGrid[row+2][col].hasLink()) {
+        theGrid[row][col].removeLink();
+      }
     }
     else {
       if (row == 7) {
-        if (activePlayer->getPlayerNumber() == 2) {
+        if (activePlayer->getPlayerNumber() == 1) {
           activePlayer->downloadLink(link);
         } else {
           move(row, col, link);
@@ -249,6 +263,9 @@ void Grid::moveLink(Link *link, Direction dir) {
         }
       } else {
         move(row + 1, col, link);
+      }
+      if (theGrid[row+1][col].hasLink()) {
+        theGrid[row][col].removeLink();
       }
     }
   }
@@ -260,6 +277,9 @@ void Grid::moveLink(Link *link, Direction dir) {
       } else {
         move(row, col - 2, link);
       }
+      if (theGrid[row][col-2].hasLink()) {
+        theGrid[row][col].removeLink();
+      }
     }
     else {
       if (col == 0) {
@@ -268,6 +288,9 @@ void Grid::moveLink(Link *link, Direction dir) {
       } else {
         move(row, col - 1, link);
       }
+    }
+    if (theGrid[row][col-1].hasLink()) {
+      theGrid[row][col].removeLink();
     }
   }
   notifyObservers();
