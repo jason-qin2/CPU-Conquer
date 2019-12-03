@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
               g.changeActivePlayer();
               std::cout << g;
               link = nullptr;
-              useAbility = false; 
+              usedAbility = false; 
           } catch (InvalidMove) {
               std::cout << "This is not a valid move, please enter a valid move." << std::endl;
           }
