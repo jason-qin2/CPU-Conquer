@@ -15,6 +15,7 @@ void Player::downloadLink(Link *link) {
       if(theGrid.getCell(i,j)->hasLink()) {
         if (theGrid.getCell(i,j)->getLink()->getName() == name) {
           theGrid.getCell(i,j)->removeLink();
+          theGrid.getCell(i,j)->notifyObservers();
         }
       }
     }
@@ -50,7 +51,7 @@ void Player::fireWall(Ability *ability) {
         throw AbilityError();
     } else {
         targetCell->addAbility(ability);
-        theGrid.notifyObservers();
+        targetCell->notifyObservers();
         return;
     }
 }
@@ -61,7 +62,6 @@ void Player::download(int opponentNumber, std::vector<Link *> opponentLinks, Pla
     for (size_t i = 0; i < opponentLinks.size(); i++) {
         if (opponentLinks[i]->getName() == linkID) {
             curPlayer->downloadLink(opponentLinks[i]);
-            theGrid.notifyObservers();
             return;
         }
     }
@@ -74,14 +74,12 @@ void Player::polarize(int opponentNumber, std::vector<Link *> opponentLinks) {
     for (size_t i = 0; i < ownedLinks.size(); i++) {
         if (ownedLinks[i]->getName() == linkID) {
             ownedLinks[i]->changeType();
-            theGrid.notifyObservers();
             return;
         }
     }
     for (size_t i = 0; i < opponentLinks.size(); i++) {
         if (opponentLinks[i]->getName() == linkID) {
             opponentLinks[i]->changeType();
-            theGrid.notifyObservers();
             return;
         }
     }
@@ -94,14 +92,12 @@ void Player::scan(std::vector <Link *> opponentLinks) {
     for(size_t i = 0; i < ownedLinks.size(); i++) {
         if(ownedLinks[i]->getName() == linkID) {
             ownedLinks[i]->show();
-            theGrid.notifyObservers();
             return;
         }
     }
     for(size_t i = 0; i < opponentLinks.size(); i++) {
         if(opponentLinks[i]->getName() == linkID) {
             opponentLinks[i]->show();
-            theGrid.notifyObservers();
             return;
         }
     }
@@ -132,7 +128,6 @@ void Player::useAbility(int abilityNum){
         scan(opponentLinks);
     }
     ability->useAbility();
-    theGrid.notifyObservers();
     return;
 }
 

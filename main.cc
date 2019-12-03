@@ -12,6 +12,14 @@ void printInvalidArgs(char *programName) {
     std::cout << "-link1 <order> -link2 <order> -graphics (optional)" << endl;
 }
 
+void displayGame(bool enabledGraphics, Grid *g) {
+    if (enabledGraphics) {
+        g->renderGraphics();
+    } else {
+        std::cout << *g;
+    }
+}
+
 int main(int argc, char *argv[]) {
     string pOneAbils = "LFDSP";
     string pTwoAbils = "LFDSP";
@@ -41,7 +49,7 @@ int main(int argc, char *argv[]) {
         printInvalidArgs(argv[0]);
         return 1;
     }
-    std::cout << g;
+    displayGame(enabledGraphics, &g);
     string cmd;
     streambuf* streamBuffer = 0; // default cin streambuf object
     ifstream inputFile;     // file stream for reading input
@@ -58,13 +66,13 @@ int main(int argc, char *argv[]) {
             std::cin >> abilityNum;
             try {
                 g.getActivePlayer()->useAbility(abilityNum);
-                std::cout << g;
+                displayGame(enabledGraphics, &g);
                 usedAbility = true;
             } catch (AbilityError) {
                 std::cout << "Invalid usage of ability" << endl;
             }
         } else if (cmd == "board") {
-            std::cout << g;
+            displayGame(enabledGraphics, &g);
         } else if (cmd == "sequence") {
             string fileName;
             std::cin >> fileName;
@@ -110,9 +118,9 @@ int main(int argc, char *argv[]) {
           try {
               g.moveLink(link, dir);
               g.changeActivePlayer();
-              std::cout << g;
               link = nullptr;
               usedAbility = false;
+              displayGame(enabledGraphics, &g);
           } catch (InvalidMove) {
               std::cout << "This is not a valid move, please enter a valid move." << std::endl;
           }

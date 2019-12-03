@@ -20,42 +20,25 @@ TextDisplay::TextDisplay() {
   }
 }
 
-int getFirewallOwner(Cell cell) {
-  std::vector<Ability*> abilities = cell.getAbilities();
-  for (size_t i = 0; i < abilities.size(); i++) {
-    if (abilities[i]->getAbilityType() == AbilityType::FireWall) {
-      if (abilities[i]->getPlayerNum() == 1) {
-        return 1;
-      }
-      else if (abilities[i]->getPlayerNum() == 2) {
-        return 2;
-      }
-    }
-  }
-  return 0;
-}
-
 void TextDisplay::notify(Subject &whoFrom) {
-  for (int i = 0; i < 8; i++) {
-    for (int j = 0; j < 8; j++) {
-      Cell curCell = whoFrom.getInfo().theGrid[i][j];
-      if (curCell.hasLink()) {
-        theDisplay[i][j] = curCell.getLink()->getName();
-      }
-      else if (curCell.getServerPort()) {
-        theDisplay[i][j] = 'S';
-      }
-      else if (getFirewallOwner(curCell) == 1) {
-        theDisplay[i][j] = 'm';
-      }
-      else if (getFirewallOwner(curCell) == 2) {
-        theDisplay[i][j] = 'w';
-      }
-      else {
-        theDisplay[i][j] = '.';
-      }
+    Info cellInfo = whoFrom.getInfo();
+    size_t row = cellInfo.row;
+    size_t col = cellInfo.col;
+    if (cellInfo.state == State::Link) {
+      theDisplay[row][col] = cellInfo.linkName;
     }
-  }
+    else if (cellInfo.state == State::ServerPort) {
+      theDisplay[row][col] = 'S';
+    }
+    else if (cellInfo.state == State::PlayerOneFireWall) {
+      theDisplay[row][col] = 'm';
+    }
+    else if (cellInfo.state == State::PlayerTwoFireWall) {
+      theDisplay[row][col] = 'w';
+    }
+    else if (cellInfo.state == State::Empty) {
+      theDisplay[row][col] = '.';
+    }
 }
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
