@@ -160,7 +160,6 @@ void Grid::move(size_t row, size_t col, Link *link) {
       }
     }
     theGrid[row][col].setLink(link);
-    theGrid[row][col].notifyObservers();
   }
   else {
     moveOffGrid(row, col, activePlayer, link);
@@ -179,7 +178,6 @@ void Grid::moveLink(Link *link, Direction dir) {
         row = i;
         col = j;
         theGrid[i][j].removeLink();
-        theGrid[i][j].notifyObservers();
       }
     }
   }
@@ -392,14 +390,10 @@ void Grid::init(std::string pOneAbil, std::string pTwoAbil,
     for (int i = 0; i < defaultGridSize; i++) {
         if ((i == 3) | (i == 4)) {
             theGrid[1][i].setLink(playerOneLinks[i]);
-            theGrid[1][i].notifyObservers();
             theGrid[6][i].setLink(playerTwoLinks[i]);
-            theGrid[6][i].notifyObservers();
         } else {
             theGrid[0][i].setLink(playerOneLinks[i]);
-            theGrid[0][i].notifyObservers();
             theGrid[7][i].setLink(playerTwoLinks[i]);
-            theGrid[7][i].notifyObservers();
         }
     }
 }

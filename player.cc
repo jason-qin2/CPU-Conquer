@@ -15,7 +15,6 @@ void Player::downloadLink(Link *link) {
       if(theGrid.getCell(i,j)->hasLink()) {
         if (theGrid.getCell(i,j)->getLink()->getName() == name) {
           theGrid.getCell(i,j)->removeLink();
-          theGrid.getCell(i,j)->notifyObservers();
         }
       }
     }
@@ -51,7 +50,6 @@ void Player::fireWall(Ability *ability) {
         throw AbilityError();
     } else {
         targetCell->addAbility(ability);
-        targetCell->notifyObservers();
         return;
     }
 }
