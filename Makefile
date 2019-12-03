@@ -5,7 +5,7 @@ OBJECTS = main.o ability.o cell.o grid.o link.o player.o subject.o textDisplay.o
 DEPENDS = ${OBJECTS:.o=.d}
 
 ${EXEC}: ${OBJECTS}
-	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11 -L/usr/X11/lib -I/usr/X11/include
+	${CXX} ${CXXFLAGS} ${OBJECTS} -o ${EXEC} -lX11 -L/usr/X11/lib -I/usr/X11/include -lSDL -lSDL_mixer
 
 -include ${DEPENDS}
 

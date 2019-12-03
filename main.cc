@@ -3,6 +3,8 @@
 #include <string.h>
 #include "grid.h"
 #include "exceptions.h"
+#include "SDL/SDL.h"
+#include "SDL/SDL_mixer.h"
 using namespace std;
 
 void printInvalidArgs(char *programName) {
@@ -21,6 +23,19 @@ void displayGame(bool enabledGraphics, Grid *g) {
 }
 
 int main(int argc, char *argv[]) {
+    //Start SDL
+    SDL_Init( SDL_INIT_EVERYTHING );
+    SDL_AudioSpec wav_spec;
+	Uint32 wav_length;
+	Uint8 *wav_buffer;
+	if(SDL_LoadWAV("song.wav", &wav_spec, &wav_buffer,&wav_length)==NULL){
+        fprintf(stderr, "Could not open song.wav: %s\n", SDL_GetError());
+        return 3;
+    }
+	SDL_PauseAudio(0);
+	SDL_Delay(5000);
+    SDL_Quit();
+    
     string pOneAbils = "LFDSP";
     string pTwoAbils = "LFDSP";
     string pOneLinks = "V1V2V3V4D1D2D3D4";
