@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -MMD -g -g3 -Werror=vla
-EXEC = stratego
+EXEC = RAIInet
 OBJECTS = main.o ability.o cell.o grid.o link.o player.o subject.o textDisplay.o window.o graphics.o
 DEPENDS = ${OBJECTS:.o=.d}
 
