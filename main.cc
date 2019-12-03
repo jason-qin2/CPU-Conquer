@@ -21,8 +21,8 @@ void displayGame(bool enabledGraphics, Grid *g) {
 }
 
 int main(int argc, char *argv[]) {
-    string pOneAbils = "LFDSPRT";
-    string pTwoAbils = "LFDSPRT";
+    string pOneAbils = "LFDSP";
+    string pTwoAbils = "LFDSP";
     string pOneLinks = "V1V2V3V4D1D2D3D4";
     string pTwoLinks = "V1V2V3V4D1D2D3D4";
     bool enabledGraphics = false;
