@@ -85,18 +85,27 @@ int main(int argc, char *argv[]) {
             dir = Direction::South;
           } else if (d == "left") {
             dir = Direction::West;
+          } else {
+            std::cout << "This is not a valid move, please enter a valid move." << std::endl;
+            continue;
           }
           for (size_t i = 0; i < g.getActivePlayer()->getOwnedLinks().size(); i++) {
             if (g.getActivePlayer()->getOwnedLinks()[i]->getName() == name) {
               link = g.getActivePlayer()->getOwnedLinks()[i];
             }
           }
+          if (link->isDownloaded()) {
+            std::cout << "This link has already been downloaded. Try moving another link." << std::endl;
+            link = nullptr;
+            continue;
+          }
           try {
               g.moveLink(link, dir);
               g.changeActivePlayer();
               std::cout << g;
+              link = nullptr;
           } catch (InvalidMove) {
-              std::cout << "This is not a valid move, please enter a valid move." << std::endl; 
+              std::cout << "This is not a valid move, please enter a valid move." << std::endl;
           }
         }
     }

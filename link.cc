@@ -47,3 +47,11 @@ int Link::getPlayerNum() {
 std::vector<Ability*> Link::getAbilities() {
   return abilities;
 }
+
+bool Link::isDownloaded() {
+  return downloaded;
+}
+
+bool Link::download() {
+  downloaded = true;
+}

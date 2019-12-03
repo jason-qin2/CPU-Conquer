@@ -13,6 +13,7 @@ class Link {
         char name;
         bool hidden = true;
         int playerNum;
+        bool downloaded = false;
     public:
         Link(int strength, LinkType type, char name, int playerNum);
         void changeType();
@@ -24,6 +25,8 @@ class Link {
         bool isHidden();
         int getPlayerNum();
         std::vector<Ability*> getAbilities();
+        bool isDownloaded();
+        bool download();
 };
 
 #endif

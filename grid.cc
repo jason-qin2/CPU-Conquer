@@ -116,14 +116,16 @@ bool willBattle(Cell cell) {
     }
 }
 
-void battle(Link *ownLink, Link *opponentLink, Player *activePlayer, std::vector<Player*> players) {
+Link *battle(Link *ownLink, Link *opponentLink, Player *activePlayer, std::vector<Player*> players) {
     ownLink->show();
     opponentLink->show();
     int opponentID = (activePlayer->getPlayerNumber() == 1) ? 2 : 1;
     if(ownLink->getStrength() >= opponentLink->getStrength()) {
         activePlayer->downloadLink(opponentLink);
+        return ownLink;
     } else {
         players[opponentID - 1]->downloadLink(ownLink);
+        return opponentLink;
     }
 }
 
@@ -140,13 +142,21 @@ void Grid::move(size_t row, size_t col, Link *link) {
       Cell cell = theGrid[row][col];
     if (isFirewall(cell)) {
       firewall(cell, activePlayer);
+      return;
     }
     if(cell.getServerPort()) {
         serverport(row, link);
+        return;
     }
     if(willBattle(cell)) {
         Link *opponentLink = cell.getLink();
-        battle(link, opponentLink, activePlayer, players );
+        if (battle(link, opponentLink, activePlayer, players)->getName() == link->getName()) {
+          theGrid[row][col].setLink(link);
+          return;
+        } else {
+          theGrid[row][col].setLink(opponentLink);
+          return;
+        }
     }
     theGrid[row][col].setLink(link);
   }
@@ -156,6 +166,9 @@ void Grid::move(size_t row, size_t col, Link *link) {
 }
 
 void Grid::moveLink(Link *link, Direction dir) {
+  if (link == nullptr) {
+    throw InvalidMove();
+  }
   size_t row;
   size_t col;
   for (size_t i = 0; i < theGrid.size(); i++) {
@@ -169,7 +182,7 @@ void Grid::moveLink(Link *link, Direction dir) {
   }
   if (dir == Direction::North) {
     if (isLinkBoost(link)) {
-      if (row == 0) {
+      if (row == 0 || row == 1) {
         if (activePlayer->getPlayerNumber() == 2) {
           activePlayer->downloadLink(link);
         } else {
@@ -195,7 +208,7 @@ void Grid::moveLink(Link *link, Direction dir) {
   }
   else if (dir == Direction::East) {
     if (isLinkBoost(link)) {
-      if (col == 7) {
+      if (col == 7 || col == 6) {
         if (activePlayer->getPlayerNumber() == 2) {
           activePlayer->downloadLink(link);
         } else {
@@ -221,7 +234,7 @@ void Grid::moveLink(Link *link, Direction dir) {
   }
   else if (dir == Direction::South) {
     if (isLinkBoost(link)) {
-      if (row == 7) {
+      if (row == 7 || row == 6) {
         if (activePlayer->getPlayerNumber() == 2) {
           activePlayer->downloadLink(link);
         } else {
@@ -247,7 +260,7 @@ void Grid::moveLink(Link *link, Direction dir) {
   }
   else if (dir == Direction::West) {
     if (isLinkBoost(link)) {
-      if (col == 0) {
+      if (col == 0 || col == 1) {
         if (activePlayer->getPlayerNumber() == 2) {
           activePlayer->downloadLink(link);
         } else {

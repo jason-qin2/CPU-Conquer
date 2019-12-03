@@ -21,6 +21,7 @@ void Player::downloadLink(Link *link) {
   }
   link->show();
     downloadedLinks.push_back(link);
+    link->download();
 }
 
 void Player::linkBoost(Ability *ability) {
@@ -185,6 +186,10 @@ void Player::printAbilities(std::ostream &out) {
         }
         out << std::endl;
     }
+}
+
+std::vector<Link*> &Player::getDownloadedLinks() {
+  return downloadedLinks;
 }
 
 Player::~Player() {

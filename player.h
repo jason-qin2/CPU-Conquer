@@ -31,6 +31,7 @@ class Player {
         int getPlayerNumber();
         std::vector<Link*> &getOwnedLinks();
         void printAbilities(std::ostream &out);
+        std::vector<Link*> &getDownloadedLinks();
         ~Player();
 };
 
