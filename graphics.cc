@@ -1,20 +1,21 @@
 #include "graphics.h"
 #include "subject.h"
 
-//void fillRectangle(int x, int y, int width, int height, int colour=Black);
-GraphicsDisplay::GraphicsDisplay() : window{new Xwindow(400, 800)} {
-    for (int row = 200; row < 600; row += 50) {
-        for (int col = 0; col < 400; col += 50) {
-            window->fillRectangle(col + 5, row, 40, 40);
-        }
-    }
+GraphicsDisplay::GraphicsDisplay() : window{new Xwindow(400, 900)} {
+    window->fillRectangle(0, 10, 400, 30);
+    window->fillRectangle(0, 20, 400, 10, Xwindow::White);
+    window->fillRectangle(0, 80, 400, 30);
+    window->fillRectangle(0, 90, 400, 10, Xwindow::White);
+    window->drawStringFont(165, 65, "RAIINET",
+    "-misc-open sans extrabold-extrabold-r-normal--0-0-0-0-p-0-ascii-0");
 }
 
 void GraphicsDisplay::drawPlayerData(Player *player, Player *activePlayer) {
-    int startingHeight = (player->getPlayerNumber() == 1) ? 0 : 600;
+    int startingHeight = (player->getPlayerNumber() == 1) ? 100 : 700;
+    window->fillRectangle(0, startingHeight, 400, 200, Xwindow::White);
     int gutterWidth = 20;
-    std::string playerName = "Player " + std::to_string(player->getPlayerNumber());
-    std::string downloadedStr = "Downloaded";
+    std::string playerName = "PLAYER " + std::to_string(player->getPlayerNumber());
+    std::string downloadedStr = "DOWNLOADED";
     std::string dataCount = std::to_string(player->getDlDataCount()) + " Data";
     std::string virusCount = std::to_string(player->getDlVirusCount()) + " Virus";
     std::string abilitiesStr = "Abilities";
@@ -22,7 +23,10 @@ void GraphicsDisplay::drawPlayerData(Player *player, Player *activePlayer) {
     int linkRowHeight = startingHeight + 140;
     for (size_t i = 0; i < links.size(); i++) {
         std::string linkChar(1, links[i]->getName());
-        std::string linkString = linkChar + ": ";
+        std::string linkName = linkChar + ": ";
+        std::string linkString = "";
+        window->drawStringFont(gutterWidth + ((i % 4) * 90), linkRowHeight, linkName,
+        "-misc-open sans-bold-r-normal--0-0-0-0-p-0-ascii-0");
         if (links[i]->isHidden() && player != activePlayer) {
             linkString += "?";
         } else {
@@ -33,42 +37,49 @@ void GraphicsDisplay::drawPlayerData(Player *player, Player *activePlayer) {
             }
             linkString += std::to_string(links[i]->getStrength());
         }
-        window->drawString(gutterWidth + ((i % 4) * 50), linkRowHeight, linkString);
+        window->drawStringFont(gutterWidth + ((i % 4) * 90) + 20, linkRowHeight, linkString,
+        "-misc-open sans-medium-r-normal--0-0-0-0-p-0-ascii-0");
         if (i == 3 || i == 7) {
             linkRowHeight += 40;
         }
     }
-    window->drawBigString(gutterWidth, startingHeight + 50, playerName);
-    window->drawString(gutterWidth, startingHeight + 100, downloadedStr);
-    window->drawString(gutterWidth, startingHeight + 120, dataCount);
-    window->drawString(gutterWidth + 100, startingHeight + 120, virusCount);
+    window->fillRectangle(0, startingHeight + 20, 400, 50);
+    window->drawStringFont(gutterWidth, startingHeight + 50, playerName, 
+        "-misc-open sans extrabold-extrabold-r-normal--0-0-0-0-p-0-ascii-0", Xwindow::White);
+    window->drawStringFont(gutterWidth, startingHeight + 100, downloadedStr,
+    "-misc-open sans-bold-r-normal--0-0-0-0-p-0-ascii-0");
+    window->drawStringFont(gutterWidth + 180, startingHeight + 100, dataCount,
+    "-misc-open sans-bold-r-normal--0-0-0-0-p-0-ascii-0", Xwindow::Green);
+    window->drawStringFont(gutterWidth + 300, startingHeight + 100, virusCount,
+    "-misc-open sans-bold-r-normal--0-0-0-0-p-0-ascii-0", Xwindow::Red);
 }
 
 void GraphicsDisplay::notify(Subject &whoFrom) {
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            Info cellInfo = whoFrom.getInfo();
-            size_t row = (cellInfo.row * 50) + 200;
-            size_t col = cellInfo.col * 50;
-            std::string cellString;
-            if (cellInfo.state == State::Link) {
-                cellString = std::string(1, cellInfo.linkName);
-                window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
-            } else if (cellInfo.state == State::ServerPort) {
-                window->fillRectangle(col + 5, row, 40, 40, Xwindow::Blue);
-                cellString = "S";
-                window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
-            } else if (cellInfo.state == State::PlayerOneFireWall) {
-                window->fillRectangle(col + 5, row, 40, 40, Xwindow::Red);
-                cellString = "M";
-                window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
-            } else if (cellInfo.state == State::PlayerTwoFireWall) {
-                window->fillRectangle(col + 5, row, 40, 40, Xwindow::Red);
-                cellString = "W";
-                window->drawBigString(col + 20, row + 40, cellString, Xwindow::White);
-            } else if (cellInfo.state == State::Empty) {
-                window->fillRectangle(col + 5, row, 40, 40, Xwindow::Black);
-            }
-        }
+    Info cellInfo = whoFrom.getInfo();
+    size_t row = (cellInfo.row * 50) + 300;
+    size_t col = cellInfo.col * 50;
+    std::string cellString;
+    int colour = Xwindow::Black;
+    if (cellInfo.state == State::Link) {
+        cellString = std::string(1, cellInfo.linkName);
+    } else if (cellInfo.state == State::ServerPort) {
+        colour = Xwindow::Blue;
+        cellString = "S";
+    } else if (cellInfo.state == State::PlayerOneFireWall) {
+        colour = Xwindow::Red;
+        cellString = "M";
+    } else if (cellInfo.state == State::PlayerTwoFireWall) {
+        colour = Xwindow::Red;
+        cellString = "W";
+    } else if (cellInfo.state == State::Empty) {
+        window->fillRectangle(col, row, cellSize, cellSize, colour);
+        return;
     }
+    window->fillRectangle(col, row, cellSize, cellSize, colour);
+    window->drawStringFont(
+        col + 20, row + 30, 
+        cellString, 
+        "-misc-open sans extrabold-extrabold-r-normal--0-0-0-0-p-0-ascii-0", 
+        Xwindow::White
+    );
 }

@@ -182,7 +182,6 @@ void Grid::move(size_t row, size_t col, Link *link) {
       }
     }
     theGrid[row][col].setLink(link);
-    theGrid[row][col].notifyObservers();
   }
   else {
     std::cout << "calling moveOffgrid" << std::endl; 
@@ -202,7 +201,6 @@ void Grid::moveLink(Link *link, Direction dir) {
         row = i;
         col = j;
         theGrid[i][j].removeLink();
-        theGrid[i][j].notifyObservers();
       }
     }
   }
@@ -323,7 +321,8 @@ void Grid::moveLink(Link *link, Direction dir) {
 std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNum) {
   std::vector<Ability*> abilitiesArr;
   int LBCount = 0, FWCount = 0, DLCount = 0;
-  int PLCount = 0, SCCount = 0, RLCount = 0, SSCount = 0; 
+  int PLCount = 0, SCCount = 0, STCount = 0;
+  int SSCount = 0;
   for (char const &c: abilitiesStr) {
     if (c == 'L') {
       abilitiesArr.push_back(new Ability(AbilityType::LinkBoost, playerNum));
@@ -346,9 +345,12 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
     } else if (c == 'T') {
       abilitiesArr.push_back(new Ability(AbilityType::SuperStrength, playerNum));
       SSCount++; 
-    }
+    } else if (c == 'X') {
+      abilitiesArr.push_back(new Ability(AbilityType::Steal, playerNum));
+      STCount++;
+    } 
   }
-  if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || SCCount > 2) {
+  if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || SCCount > 2 || STCount > 2 || SSCount > 2) {
     throw InvalidArguments();
   }
   return abilitiesArr;
@@ -421,14 +423,10 @@ void Grid::init(std::string pOneAbil, std::string pTwoAbil,
     for (int i = 0; i < defaultGridSize; i++) {
         if ((i == 3) | (i == 4)) {
             theGrid[1][i].setLink(playerOneLinks[i]);
-            theGrid[1][i].notifyObservers();
             theGrid[6][i].setLink(playerTwoLinks[i]);
-            theGrid[6][i].notifyObservers();
         } else {
             theGrid[0][i].setLink(playerOneLinks[i]);
-            theGrid[0][i].notifyObservers();
             theGrid[7][i].setLink(playerTwoLinks[i]);
-            theGrid[7][i].notifyObservers();
         }
     }
 }

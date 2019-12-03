@@ -37,14 +37,17 @@ std::vector<Ability*> Cell::getAbilities() {
 
 void Cell::setLink(Link *link) {
   this->link = link;
+  notifyObservers();
 } //places a link on the cell
 
 void Cell::removeLink() {
   link = nullptr;
+  notifyObservers();
 } //removes link on the cell
 
 void Cell::addAbility(Ability *ability) {
   abilities.push_back(ability);
+  notifyObservers();
 } //adds an ability to the link on the cell
 
 bool Cell::getServerPort() {

@@ -22,6 +22,7 @@ class Player {
         void scan(std::vector <Link *> opponentLinks);
         void relocate(std::vector<Link *> opponentLinks);
         void superStrength(std::vector<Link *> opponentLinks);
+        void steal();
     public:
         Player(int playerNumber, std::vector<Ability*> abilities,
             std::vector<Link*> links, Grid &theGrid);
@@ -34,6 +35,7 @@ class Player {
         std::vector<Link*> &getOwnedLinks();
         void printAbilities(std::ostream &out);
         std::vector<Link*> &getDownloadedLinks();
+        std::vector<Ability*> getAbilities();
         ~Player();
 };
 

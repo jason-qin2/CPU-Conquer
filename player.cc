@@ -2,6 +2,10 @@
 #include "player.h"
 #include "grid.h"
 #include "exceptions.h"
+#include <stdlib.h>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
 
 Player::Player(int playerNumber, std::vector<Ability*> abilities,
 std::vector<Link*> links, Grid &theGrid) :
@@ -15,7 +19,6 @@ void Player::downloadLink(Link *link) {
       if(theGrid.getCell(i,j)->hasLink()) {
         if (theGrid.getCell(i,j)->getLink()->getName() == name) {
           theGrid.getCell(i,j)->removeLink();
-          theGrid.getCell(i,j)->notifyObservers();
         }
       }
     }
@@ -51,7 +54,6 @@ void Player::fireWall(Ability *ability) {
         throw AbilityError();
     } else {
         targetCell->addAbility(ability);
-        targetCell->notifyObservers();
         return;
     }
 }
@@ -147,9 +149,36 @@ void Player::superStrength(std::vector<Link *> opponentLinks) {
     throw AbilityError();
     
 }
+std::vector<Ability*> Player::getAbilities() {
+  return abilities;
+}
+
+void Player::steal() {
+  std::cout << "OOH HE STEALING!" << std::endl;
+  int oppPlayerNum;
+  if (playerNumber == 1) {
+    oppPlayerNum = 2;
+  } else {
+    oppPlayerNum = 1;
+  }
+  int numOppAbilities = theGrid.getPlayer(oppPlayerNum)->getAbilityCount();
+  if (numOppAbilities <= 0) {
+    std::cout << "Opponent has no more abilities." << std::endl;
+  }
+  //srand (1);
+  srand(time(NULL));
+    int randNum;
+    randNum = (rand()%numOppAbilities)+1;
+    std::cout << randNum << std::endl;
+  std::vector <Ability*> oppAbilities = theGrid.getPlayer(oppPlayerNum)->getAbilities();
+  Ability *newAbility = new Ability(oppAbilities[randNum]->getAbilityType(), playerNumber);
+  abilities.push_back(newAbility); //rand() % (numOppAbilities - 1)]);
+  oppAbilities[randNum]->useAbility();
+  //OppAbilities.erase(OppAbilities.begin() + 1);//+ (rand() % numOppAbilities - 1) - 1);
+}
 
 void Player::useAbility(int abilityNum){
-    if (abilityNum < 1 || abilityNum > 8) {
+    if (abilityNum < 1 || unsigned(abilityNum) > abilities.size()) {
         throw AbilityError();
     }
     Ability *ability = abilities[abilityNum - 1];
@@ -174,6 +203,8 @@ void Player::useAbility(int abilityNum){
         relocate(opponentLinks);
     } else if(currAbility == AbilityType::SuperStrength) {
         superStrength(opponentLinks);
+    } else if (currAbility == AbilityType::Steal) {
+      this->steal();
     }
     ability->useAbility();
     return;
