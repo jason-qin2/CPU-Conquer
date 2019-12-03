@@ -322,7 +322,7 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
   std::vector<Ability*> abilitiesArr;
   int LBCount = 0, FWCount = 0, DLCount = 0;
   int PLCount = 0, SCCount = 0, STCount = 0;
-  int SSCount = 0;
+  int SSCount = 0, RLCount = 0;
   for (char const &c: abilitiesStr) {
     if (c == 'L') {
       abilitiesArr.push_back(new Ability(AbilityType::LinkBoost, playerNum));
