@@ -49,12 +49,15 @@ int main(int argc, char *argv[]) {
         if (cmd == "abilities") {
             g.getActivePlayer()->printAbilities(std::cout);
         } else if (cmd == "ability") {
+            if (usedAbility) {
+                std::cout << "Already used an ability this turn." << endl;
+                continue;
+            }
             int abilityNum;
             std::cin >> abilityNum;
             try {
                 g.getActivePlayer()->useAbility(abilityNum);
                 usedAbility = true;
-                g.changeActivePlayer();
             } catch (AbilityError) {
                 std::cout << "Invalid usage of ability" << endl;
             }
@@ -88,9 +91,13 @@ int main(int argc, char *argv[]) {
               link = g.getActivePlayer()->getOwnedLinks()[i];
             }
           }
-          g.moveLink(link, dir);
-          g.changeActivePlayer();
-          std::cout << g;
+          try {
+            g.moveLink(link, dir);
+            g.changeActivePlayer();
+            std::cout << g;
+          } catch (...) {
+              std::cout << "Invalid Move";
+          }
         }
     }
     if (streamBuffer) {
