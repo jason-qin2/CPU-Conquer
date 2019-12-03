@@ -125,6 +125,11 @@ int main(int argc, char *argv[]) {
               std::cout << "This is not a valid move, please enter a valid move." << std::endl;
           }
         }
+        if (g.isFinished()) {
+            int winnerNum = g.whoWon()->getPlayerNumber();
+            std::cout << "Player " << winnerNum << " Won!";
+            return 0;
+        }
     }
     if (streamBuffer) {
         std::cin.rdbuf(streamBuffer);
