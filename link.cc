@@ -52,6 +52,6 @@ bool Link::isDownloaded() {
   return downloaded;
 }
 
-bool Link::download() {
+void Link::download() {
   downloaded = true;
 }
