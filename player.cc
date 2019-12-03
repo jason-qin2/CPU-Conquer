@@ -165,7 +165,6 @@ void Player::steal() {
   if (numOppAbilities <= 0) {
     std::cout << "Opponent has no more abilities." << std::endl;
   }
-  //srand (1);
   srand(time(NULL));
     int randNum;
     randNum = (rand()%numOppAbilities)+1;

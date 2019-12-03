@@ -99,7 +99,6 @@ void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
   int playerNum = activePlayer->getPlayerNumber();
   if (playerNum == 1) {
     if (row > 7 && col >= 0 && col <= 7) {
-      std::cout<< "its reached here" << std::endl; 
       activePlayer->downloadLink(link);
     }
   } else if (playerNum == 2) {
@@ -157,7 +156,6 @@ void Grid::spawnLink(Link *link) {
       int randCol = rand() % 8;
       int randRow = rand() % 8; 
       if(!theGrid[randRow][randCol].hasLink()) {
-        std::cout <<"it has reached here" << std::endl; 
         theGrid[randRow][randCol].setLink(link);
         break;
         }
@@ -184,7 +182,6 @@ void Grid::move(size_t row, size_t col, Link *link) {
     theGrid[row][col].setLink(link);
   }
   else {
-    std::cout << "calling moveOffgrid" << std::endl; 
     moveOffGrid(row, col, activePlayer, link);
   }
 }
@@ -200,7 +197,6 @@ void Grid::moveLink(Link *link, Direction dir) {
       if (link == theGrid[i][j].getLink()) {
         row = i;
         col = j;
-        theGrid[i][j].removeLink();
       }
     }
   }
