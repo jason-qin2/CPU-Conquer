@@ -135,7 +135,7 @@ void Player::steal() {
 }
 
 void Player::useAbility(int abilityNum){
-    if (abilityNum < 1 || abilityNum > abilities.size()) {
+    if (abilityNum < 1 || unsigned(abilityNum) > abilities.size()) {
         throw AbilityError();
     }
     Ability *ability = abilities[abilityNum - 1];
