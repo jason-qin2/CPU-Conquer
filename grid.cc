@@ -31,10 +31,10 @@ Player *Grid::whoWon() {
   Player *playerOne = players[0];
   Player *playerTwo = players[1];
   if ((playerOne->getDlDataCount() >= 4) ||
-  (playerTwo->getDlDataCount() >= 4)) {
+  (playerTwo->getDlVirusCount() >= 4)) {
     return playerOne;
   } else if ((playerTwo->getDlDataCount() >= 4) ||
-  (playerOne->getDlDataCount() >= 4)) {
+  (playerOne->getDlVirusCount() >= 4)) {
     return playerTwo;
   }
   return nullptr;

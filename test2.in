@@ -32,3 +32,11 @@ ability 1 G
 move G up
 ability 1 d
 move d down
+move A up
+move b down
+move A up
+move b down
+move A up
+move b down
+move A up
+move b left
