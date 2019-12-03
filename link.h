@@ -26,7 +26,7 @@ class Link {
         int getPlayerNum();
         std::vector<Ability*> getAbilities();
         bool isDownloaded();
-        bool download();
+        void download();
 };
 
 #endif
