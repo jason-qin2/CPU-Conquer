@@ -165,11 +165,19 @@ void Player::steal() {
   if (numOppAbilities <= 0) {
     std::cout << "Opponent has no more abilities." << std::endl;
   }
-  srand(time(NULL));
-    int randNum;
-    randNum = (rand()%numOppAbilities)+1;
-    std::cout << randNum << std::endl;
   std::vector <Ability*> oppAbilities = theGrid.getPlayer(oppPlayerNum)->getAbilities();
+  int randNum;
+  while (true) {
+    srand(time(NULL));
+      randNum = (rand()%numOppAbilities)+1;
+      std::cout << randNum << std::endl;
+      if (oppAbilities[randNum]->getUsed()) {
+        continue;
+      }
+      else {
+        break;
+      }
+  }
   Ability *newAbility = new Ability(oppAbilities[randNum]->getAbilityType(), playerNumber);
   abilities.push_back(newAbility); //rand() % (numOppAbilities - 1)]);
   oppAbilities[randNum]->useAbility();
