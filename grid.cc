@@ -11,6 +11,7 @@ bool Grid::isFinished() {
             return true;
         }
     }
+    return false;
 }
 
 Player *Grid::whoWon() {
@@ -84,6 +85,7 @@ bool Grid::isValidMove(size_t row, size_t col) {
           return true;
       }
   }
+  return false;
 }
 
 void moveOffGrid(size_t row, size_t col, Player *activePlayer, Link *link) {
@@ -248,7 +250,7 @@ std::vector<Link*> Grid::initLinks(std::string linksStr, int playerNum) {
         }
         linksArr.push_back(new Link(linkStrength, linkType, linkNames[0], playerNum));
         linkNames.erase(0, 1);
-        i++;
+        i = i + 1;
     }
     return linksArr;
 }
@@ -330,6 +332,7 @@ Player *Grid::getPlayer(int playerNum) {
             return player;
         }
     }
+    throw AbilityError();
 }
 
 Info Grid::getInfo() {

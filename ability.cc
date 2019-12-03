@@ -35,4 +35,5 @@ std::string Ability::getTypeAsStr() {
     } else if (type == AbilityType::Scan) {
         return "Scan";
     }
+    return "";
 }

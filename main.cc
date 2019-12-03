@@ -19,16 +19,16 @@ int main(int argc, char *argv[]) {
     string pTwoLinks = "V1V2V3V4D1D2D3D4";
     bool enabledGraphics = false;
     for (int i = 1; i < argc; i++) {
-        if (argv[i] == "-graphics") {
+        if (strcmp(argv[i], "-graphics") == 0) {
             enabledGraphics = true;
         } else {
-            if (argv[i] == "-ability1") {
+            if (strcmp(argv[i], "-ability1") == 0) {
                 pOneAbils = argv[i + 1];
-            } else if (argv[i] == "-ability2") {
+            } else if (strcmp(argv[i], "-ability2") == 0) {
                 pTwoAbils = argv[i + 1];
-            } else if (argv[i] == "-link1") {
+            } else if (strcmp(argv[i], "-link1") == 0) {
                 pOneLinks = argv[i + 1];
-            } else if (argv[i] == "-link2") {
+            } else if (strcmp(argv[i], "-link2") == 0) {
                 pTwoLinks = argv[i + 1];
             }
             i++;
