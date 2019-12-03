@@ -6,10 +6,10 @@
 using namespace std;
 
 void printInvalidArgs(char *programName) {
-    cout << "Invalid arguments supplied" << endl;
-    cout << "Usage: " << programName << " ";
-    cout << "-ability1 <order> -ability2 <order> ";
-    cout << "-link1 <order> -link2 <order> -graphics (optional)" << endl;
+    std::cout << "Invalid arguments supplied" << endl;
+    std::cout << "Usage: " << programName << " ";
+    std::cout << "-ability1 <order> -ability2 <order> ";
+    std::cout << "-link1 <order> -link2 <order> -graphics (optional)" << endl;
 }
 
 int main(int argc, char *argv[]) {
@@ -45,27 +45,26 @@ int main(int argc, char *argv[]) {
     streambuf* streamBuffer = 0; // default cin streambuf object
     ifstream inputFile;     // file stream for reading input
     bool usedAbility = false;
-    while (cin >> cmd) {
+    while (std::cin >> cmd) {
         if (cmd == "abilities") {
-            g.getActivePlayer()->printAbilities(cout);
+            g.getActivePlayer()->printAbilities(std::cout);
         } else if (cmd == "ability") {
             int abilityNum;
-            cin >> abilityNum;
+            std::cin >> abilityNum;
             try {
                 g.getActivePlayer()->useAbility(abilityNum);
                 usedAbility = true;
                 g.changeActivePlayer();
             } catch (AbilityError) {
-                cout << "Invalid usage of ability" << endl;
+                std::cout << "Invalid usage of ability" << endl;
             }
         } else if (cmd == "board") {
-            cout << g;
+            std::cout << g;
         } else if (cmd == "sequence") {
             string fileName;
-            cin >> fileName;
+            std::cin >> fileName;
             inputFile.open(fileName);
-            streamBuffer = cin.rdbuf(inputFile.rdbuf());
-            continue;
+            streamBuffer = std::cin.rdbuf(inputFile.rdbuf());
         } else if (cmd == "quit") {
             return 0;
         } else if (cmd == "move") {
@@ -73,8 +72,8 @@ int main(int argc, char *argv[]) {
           char name;
           string d;
           Direction dir;
-          cin >> name;
-          cin >> d;
+          std::cin >> name;
+          std::cin >> d;
           if (d == "up") {
             dir = Direction::North;
           } else if (d == "right") {
@@ -91,11 +90,11 @@ int main(int argc, char *argv[]) {
           }
           g.moveLink(link, dir);
           g.changeActivePlayer();
-          cout << g;
+          std::cout << g;
         }
     }
     if (streamBuffer) {
-        cin.rdbuf(streamBuffer);
+        std::cin.rdbuf(streamBuffer);
     }
     return 0;
 }
