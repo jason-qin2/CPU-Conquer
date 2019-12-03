@@ -5,8 +5,10 @@
 #include "enums.h"
 #include "link.h"
 #include "ability.h"
+#include "subject.h"
+#include "info.h"
 
-class Cell {
+class Cell : public Subject {
   bool hasServerPort; //whether the cell has a server port
   size_t row; //row of cell
   size_t col; //column of cell
@@ -23,6 +25,8 @@ public:
   void removeLink(); //removes link on the cell
   void addAbility(Ability *ability); //adds an ability to the cell
   bool getServerPort(); //whether the cell has a server port
+  int getFirewallOwner(); //returns 0 (no firewall), 1 or 2
+  Info getInfo() override;
 };
 
 #endif

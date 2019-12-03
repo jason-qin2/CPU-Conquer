@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "player.h"
 #include "grid.h"
 #include "exceptions.h"
@@ -15,6 +16,7 @@ void Player::downloadLink(Link *link) {
       if(theGrid.getCell(i,j)->hasLink()) {
         if (theGrid.getCell(i,j)->getLink()->getName() == name) {
           theGrid.getCell(i,j)->removeLink();
+          theGrid.getCell(i,j)->notifyObservers();
         }
       }
     }
@@ -50,7 +52,7 @@ void Player::fireWall(Ability *ability) {
         throw AbilityError();
     } else {
         targetCell->addAbility(ability);
-        theGrid.notifyObservers();
+        targetCell->notifyObservers();
         return;
     }
 }
@@ -61,7 +63,6 @@ void Player::download(int opponentNumber, std::vector<Link *> opponentLinks, Pla
     for (size_t i = 0; i < opponentLinks.size(); i++) {
         if (opponentLinks[i]->getName() == linkID) {
             curPlayer->downloadLink(opponentLinks[i]);
-            theGrid.notifyObservers();
             return;
         }
     }
@@ -74,14 +75,12 @@ void Player::polarize(int opponentNumber, std::vector<Link *> opponentLinks) {
     for (size_t i = 0; i < ownedLinks.size(); i++) {
         if (ownedLinks[i]->getName() == linkID) {
             ownedLinks[i]->changeType();
-            theGrid.notifyObservers();
             return;
         }
     }
     for (size_t i = 0; i < opponentLinks.size(); i++) {
         if (opponentLinks[i]->getName() == linkID) {
             opponentLinks[i]->changeType();
-            theGrid.notifyObservers();
             return;
         }
     }
@@ -94,22 +93,48 @@ void Player::scan(std::vector <Link *> opponentLinks) {
     for(size_t i = 0; i < ownedLinks.size(); i++) {
         if(ownedLinks[i]->getName() == linkID) {
             ownedLinks[i]->show();
-            theGrid.notifyObservers();
             return;
         }
     }
     for(size_t i = 0; i < opponentLinks.size(); i++) {
         if(opponentLinks[i]->getName() == linkID) {
             opponentLinks[i]->show();
-            theGrid.notifyObservers();
             return;
         }
     }
     throw AbilityError();
 }
 
+void Player::relocate() {
+    srand(time(NULL)); 
+    char linkID;
+    Link *link; 
+    std::cin >> linkID;
+    for(size_t i = 0; i < ownedLinks.size(); i++) {
+        if(ownedLinks[i]->getName() == linkID) {
+            link = ownedLinks[i];
+        }
+    }
+    for (size_t i = 0; i < theGrid.size(); i++) {
+        for (size_t j = 0; j < theGrid.size(); j++) {
+            if (link->getName() == theGrid[i][j].getLink()->getName()) {
+                theGrid[i][j].removeLink();
+            }
+        }
+    }
+    while(1) {
+        int randCol = rand() % 8;
+        int randRow = rand() % 8; 
+        if(!theGrid[randRow][rowCol].hasLink()) {
+            theGrid[randRow][rowCol].setLink(link);
+            break;
+        }
+    }
+    return; 
+}
+
 void Player::useAbility(int abilityNum){
-    if (abilityNum < 1 || abilityNum > 5) {
+    if (abilityNum < 1 || abilityNum > 8) {
         throw AbilityError();
     }
     Ability *ability = abilities[abilityNum - 1];
@@ -130,9 +155,10 @@ void Player::useAbility(int abilityNum){
         polarize(opponentNumber, opponentLinks);
     } else if(currAbility == AbilityType::Scan) {
         scan(opponentLinks);
+    } else if(currAbility == AbilityType::Relocate) {
+
     }
     ability->useAbility();
-    theGrid.notifyObservers();
     return;
 }
 

@@ -1,10 +1,13 @@
 #ifndef INFO_H
 #define INFO_H
 #include <vector>
-#include "cell.h"
+
+enum class State { Link, ServerPort, PlayerOneFireWall, PlayerTwoFireWall, Empty };
 
 struct Info {
-    std::vector<std::vector<Cell>> theGrid;
+    size_t row, col;
+    char linkName;
+    State state;
 };
 
 #endif

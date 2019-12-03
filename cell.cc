@@ -50,3 +50,35 @@ void Cell::addAbility(Ability *ability) {
 bool Cell::getServerPort() {
   return hasServerPort;
 } //whether the cell has a server port
+
+int Cell::getFirewallOwner() {
+  for (size_t i = 0; i < abilities.size(); i++) {
+    if (abilities[i]->getAbilityType() == AbilityType::FireWall) {
+      if (abilities[i]->getPlayerNum() == 1) {
+        return 1;
+      }
+      else if (abilities[i]->getPlayerNum() == 2) {
+        return 2;
+      }
+    }
+  }
+  return 0;
+}
+
+Info Cell::getInfo() {
+    char linkName;
+    State state;
+    if (hasLink()) {
+      linkName = getLink()->getName();
+      state = State::Link;
+    } else if (getServerPort()) {
+      state = State::ServerPort;
+    } else if (getFirewallOwner() == 1) {
+      state = State::PlayerOneFireWall;
+    } else if (getFirewallOwner() == 2) {
+      state = State::PlayerTwoFireWall;
+    } else {
+      state = State::Empty;
+    }
+    return Info{row, col, linkName, state};
+}
