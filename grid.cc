@@ -130,7 +130,7 @@ Link *battle(Link *ownLink, Link *opponentLink, Player *activePlayer, std::vecto
   }
 }
 
-void Grid::serverport(size_t row, Link *link) {
+void Grid::serverPort(size_t row, Link *link) {
   if(row == 0) {
     players[0]->downloadLink(link);
   } else {
@@ -188,6 +188,12 @@ void Grid::move(size_t row, size_t col, Link *link) {
         return;
       }
     }
+
+    if(theGrid[row][col].getServerPort()) {
+      serverPort(row, link);
+      return;
+    }
+
     theGrid[row][col].setLink(link);
     theGrid[row][col].notifyObservers();
   }
@@ -357,7 +363,7 @@ std::vector<Ability*> Grid::initAbilities(std::string abilitiesStr, int playerNu
       STCount++;
     }
   }
-  if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 || 
+  if (LBCount > 2 || FWCount > 2 || DLCount > 2 || PLCount > 2 ||
     SCCount > 2 || STCount > 2 || SSCount > 2) {
     throw InvalidArguments();
   }
@@ -475,7 +481,7 @@ void Grid::init(std::string pOneAbil, std::string pTwoAbil,
     } else {
       return &theGrid[row][col];
     }
-    
+
   }
 
   Player *Grid::getPlayer(int playerNum) {
