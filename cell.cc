@@ -4,12 +4,9 @@
 using namespace std;
 
 Cell::Cell(size_t r, size_t c) : row{r}, col{c}, link{nullptr} {
-  if (col == 3 || col == 4) {
-    if (row == 0 || row == 7) {
+  if ((col == 3 || col == 4) && (row == 0 || row == 7)) {
       hasServerPort = true;
-    }
-  }
-  else {
+  } else {
     hasServerPort = false;
   }
 } //constructor

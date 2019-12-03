@@ -24,6 +24,7 @@ class Grid : public Subject {
         void serverport(size_t row, Link *link);
         bool isValidMove(size_t row, size_t col);
     public:
+        ~Grid();
         bool isFinished(); // returns True if the game is finished
         Player *whoWon(); // returns the winning player
         void init(std::string pOneAbil, std::string pTwoAbil, std::string pOneLinks,
