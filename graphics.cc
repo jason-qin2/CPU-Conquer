@@ -12,7 +12,7 @@ GraphicsDisplay::GraphicsDisplay() : window{new Xwindow(400, 900)} {
 
 void GraphicsDisplay::drawPlayerData(Player *player, Player *activePlayer) {
     int startingHeight = (player->getPlayerNumber() == 1) ? 100 : 700;
-    window->fillRectangle(0, startingHeight, 400, 200, Xwindow::White);
+    window->fillRectangle(0, startingHeight + 10, 400, 190, Xwindow::White);
     int gutterWidth = 20;
     std::string playerName = "PLAYER " + std::to_string(player->getPlayerNumber());
     std::string downloadedStr = "DOWNLOADED";
