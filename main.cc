@@ -77,6 +77,10 @@ int main(int argc, char *argv[]) {
             string fileName;
             std::cin >> fileName;
             inputFile.open(fileName);
+            if (inputFile.fail()) {
+                std::cout << "Cannot open file " << fileName << std::endl;
+                continue;
+            }
             streamBuffer = std::cin.rdbuf(inputFile.rdbuf());
         } else if (cmd == "quit") {
             return 0;
